@@ -6,22 +6,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.RandomPermissions
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
-import kotlinx.android.synthetic.main.activity_main.btnGeneratePassword
-import kotlinx.android.synthetic.main.activity_main.checkAccent
-import kotlinx.android.synthetic.main.activity_main.checkLowerCase
-import kotlinx.android.synthetic.main.activity_main.checkNumbers
-import kotlinx.android.synthetic.main.activity_main.checkRequiredAccent
-import kotlinx.android.synthetic.main.activity_main.checkRequiredLowerCase
-import kotlinx.android.synthetic.main.activity_main.checkRequiredNumbers
-import kotlinx.android.synthetic.main.activity_main.checkRequiredSpecial
-import kotlinx.android.synthetic.main.activity_main.checkRequiredUpperCase
-import kotlinx.android.synthetic.main.activity_main.checkSpecial
-import kotlinx.android.synthetic.main.activity_main.checkUpperCase
-import kotlinx.android.synthetic.main.activity_main.edtLength
-import kotlinx.android.synthetic.main.activity_main.txtPassword
+import kotlinx.android.synthetic.main.activity_generate_password.btnGeneratePassword
+import kotlinx.android.synthetic.main.activity_generate_password.checkAccent
+import kotlinx.android.synthetic.main.activity_generate_password.checkLowerCase
+import kotlinx.android.synthetic.main.activity_generate_password.checkNumbers
+import kotlinx.android.synthetic.main.activity_generate_password.checkRequiredAccent
+import kotlinx.android.synthetic.main.activity_generate_password.checkRequiredLowerCase
+import kotlinx.android.synthetic.main.activity_generate_password.checkRequiredNumbers
+import kotlinx.android.synthetic.main.activity_generate_password.checkRequiredSpecial
+import kotlinx.android.synthetic.main.activity_generate_password.checkRequiredUpperCase
+import kotlinx.android.synthetic.main.activity_generate_password.checkSpecial
+import kotlinx.android.synthetic.main.activity_generate_password.checkUpperCase
+import kotlinx.android.synthetic.main.activity_generate_password.edtLength
+import kotlinx.android.synthetic.main.activity_generate_password.txtPassword
 import org.kodein.di.erased.instance
 
-class MainActivity : BaseAppActivity() {
+class GeneratePasswordActivity : BaseAppActivity() {
 
     override var resIdViewReference: Int = R.id.content
 
@@ -32,7 +32,7 @@ class MainActivity : BaseAppActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_generate_password)
 
         viewModel =
             ViewModelProvider(this, generatePasswordViewModelFactory).get(
@@ -62,12 +62,12 @@ class MainActivity : BaseAppActivity() {
     private fun initObservers() {
         viewModel.apply {
 
-            invalidLength().observe(this@MainActivity, {
+            invalidLength().observe(this@GeneratePasswordActivity, {
                 edtLength.error = getString(R.string.message_invalid_length)
                 hideProgress()
             })
 
-            getGeneratedPassword().observe(this@MainActivity, {
+            getGeneratedPassword().observe(this@GeneratePasswordActivity, {
                 txtPassword.text = it
                 hideProgress()
             })
