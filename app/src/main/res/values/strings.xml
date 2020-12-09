@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PasswordNotify</string>
+
+    <!-- Generate Password -->
+    <string name="option_numbers">Números</string>
+    <string name="option_upper">LETRAS MAISCULAS</string>
+    <string name="option_lower">letras minusculas</string>
+    <string name="option_accents">Letras com acentos</string>
+    <string name="option_special">Caracteres especiais</string>
+    <string name="option_required">Obrigatório</string>
+    <string name="action_generate">Gerar Senha</string>
+    <string name="action_register_password">Registrar Senha</string>
+    <string name="message_invalid_length">Informe um tamanho válido de 1 a 1000!</string>
+</resources>
