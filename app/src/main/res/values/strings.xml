@@ -11,4 +11,7 @@
     <string name="action_generate">Gerar Senha</string>
     <string name="action_register_password">Registrar Senha</string>
     <string name="message_invalid_length">Informe um tamanho válido de 1 a 1000!</string>
+
+    <!-- Manager Password -->
+    <string name="for_security_enable_notifications">Por segurança, habilite as notificações de mudança da senha a cada: %s TEMPOS</string>
 </resources>

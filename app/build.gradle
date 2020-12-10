@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
@@ -42,10 +43,18 @@ dependencies {
     testImplementation "org.mockito:mockito-core:2.28.2"
     androidTestImplementation 'org.mockito:mockito-android:2.19.0'
 
-
     // Kodein
     implementation 'org.kodein.di:kodein-di-erased-jvm:6.2.0'
     implementation 'org.kodein.di:kodein-di-framework-android-support:6.2.0'
+
+    // WorkManager
+    implementation 'androidx.work:work-runtime:2.4.0'
+    implementation 'androidx.concurrent:concurrent-futures:1.1.0'
+
+    // Room
+    implementation "androidx.room:room-runtime:2.2.5"
+    kapt "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.room:room-ktx:2.2.5"
 
     // Others
     implementation 'com.github.willigro:RobbieAndroidUtil:alpha-1.2.0.0'

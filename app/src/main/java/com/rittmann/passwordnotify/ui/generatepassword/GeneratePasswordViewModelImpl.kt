@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rittmann.baselifecycle.base.BaseViewModel
 import com.rittmann.baselifecycle.livedata.SingleLiveEvent
-import com.rittmann.passwordnotify.data.basic.RandomPermissions
+import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.Constants
 import com.rittmann.passwordnotify.data.TAG
 import com.rittmann.passwordnotify.data.extensions.parseToInt
@@ -16,14 +16,13 @@ import com.rittmann.passwordnotify.data.extensions.replaceFor
 import com.rittmann.passwordnotify.data.extensions.somethingContainsIn
 import java.util.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 interface GeneratePasswordViewModel {
     fun getGeneratedPassword(): LiveData<String>
     fun invalidLength(): LiveData<Boolean>
-    fun generatePassword(randomPermissions: RandomPermissions)
+    fun generatePassword(randomPermissions: ManagerPassword)
 }
 
 class GeneratePasswordViewModelFactory : ViewModelProvider.NewInstanceFactory() {
@@ -41,7 +40,7 @@ class GeneratePasswordViewModelImpl : BaseViewModel(), GeneratePasswordViewModel
     override fun getGeneratedPassword(): LiveData<String> = _password
     override fun invalidLength(): LiveData<Boolean> = _invalidLength
 
-    override fun generatePassword(randomPermissions: RandomPermissions) {
+    override fun generatePassword(randomPermissions: ManagerPassword) {
         randomPermissions.length.parseToInt({ length ->
             if (length <= 0 || length > 1000)
                 _invalidLength.call()
@@ -57,7 +56,7 @@ class GeneratePasswordViewModelImpl : BaseViewModel(), GeneratePasswordViewModel
         }
     }
 
-    private fun randomPassword(length: Int, permissions: RandomPermissions): String? {
+    private fun randomPassword(length: Int, permissions: ManagerPassword): String? {
         val chars = mutableListOf<Char>()
 
         var size = 0
@@ -104,7 +103,7 @@ class GeneratePasswordViewModelImpl : BaseViewModel(), GeneratePasswordViewModel
 
     private fun adjustPasswordIfNeed(
         s: String,
-        permissions: RandomPermissions
+        permissions: ManagerPassword
     ): String {
         var newString = s
         val excludeIndex = arrayListOf<Int>()
