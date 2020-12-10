@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.password_permissions.checkRequiredSpecial
 import kotlinx.android.synthetic.main.password_permissions.checkRequiredUpperCase
 import kotlinx.android.synthetic.main.password_permissions.checkSpecial
 import kotlinx.android.synthetic.main.password_permissions.checkUpperCase
+import kotlinx.android.synthetic.main.password_permissions.edtLength
 import org.kodein.di.erased.instance
 
 class ManagerPasswordActivity : BaseAppActivity() {
@@ -74,6 +75,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
                     managerPassword = it
 
                     edtName.setText(it.name)
+                    edtLength.setText(it.length)
 
                     with(it) {
                         checkNumbers.isChecked = numbers.first

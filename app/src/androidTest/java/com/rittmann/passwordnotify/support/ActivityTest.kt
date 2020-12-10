@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
@@ -13,6 +14,7 @@ open class ActivityTest {
     private val mCountingIdlingResource = CountingIdlingResource(RESOURCE)
     protected val targetContext: Context =
         InstrumentationRegistry.getInstrumentation().targetContext
+    protected val context : Context = ApplicationProvider.getApplicationContext()
 
     @get:Rule
     val rule = InstantTaskExecutorRule()

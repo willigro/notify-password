@@ -15,6 +15,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasErrorText
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -37,6 +38,14 @@ object ExpressoUtil {
 
     fun checkValueError(id: Int, value: String, withScroll: Boolean = false) {
         onView(withId(id)).check(matches(hasErrorText(value)))
+    }
+
+    fun viewIsChecked(id: Int) {
+        onView(withId(id)).check(matches(isChecked()))
+    }
+
+    fun viewIsNotChecked(id: Int) {
+        onView(withId(id)).check(matches(not(isChecked())))
     }
 
     fun performClick(id: Int, withScroll: Boolean = false) {
