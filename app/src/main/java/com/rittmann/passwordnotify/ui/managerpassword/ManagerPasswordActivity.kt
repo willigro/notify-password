@@ -57,14 +57,17 @@ class ManagerPasswordActivity : BaseAppActivity() {
         }
 
         btnUpdaterManager.setOnClickListener {
-            managerPassword?.also {
-                NotificationWorkerManager.scheduleNextNotification(
-                    this@ManagerPasswordActivity,
-                    1,
-                    "a",
-                    it
-                ) // todo mocked
-            }
+//            managerPassword?.also {
+//                NotificationWorkerManager.scheduleNextNotification(
+//                    this@ManagerPasswordActivity,
+//                    1,
+//                    "a",
+//                    it
+//                ) // todo mocked
+//            }
+
+            val manager = generateManagerPermission()
+            viewModel.updateManager(manager)
         }
     }
 
@@ -95,10 +98,39 @@ class ManagerPasswordActivity : BaseAppActivity() {
                     }
                 }
             })
+
+            nameIsInvalid().observe(this@ManagerPasswordActivity, {
+                edtName.error = getString(R.string.message_invalid_name)
+                hideProgress()
+            })
+
+            isInvalidLength().observe(this@ManagerPasswordActivity, {
+                edtLength.error = getString(R.string.message_invalid_length)
+                hideProgress()
+            })
+
+            isUpdateFailed().observe(this@ManagerPasswordActivity, {
+                // todo implement
+                hideProgress()
+            })
         }
     }
 
-    fun getManagerPassword() = intent!!.extras!!.getSerializable(MANAGER_ARGS) as ManagerPassword
+    private fun generateManagerPermission(): ManagerPassword {
+        return ManagerPassword(
+            id = managerPassword?.id ?: 0L,
+            edtName.text.toString(),
+            edtLength.text.toString(),
+            Pair(checkNumbers.isChecked, checkRequiredNumbers.isChecked),
+            Pair(checkUpperCase.isChecked, checkRequiredUpperCase.isChecked),
+            Pair(checkLowerCase.isChecked, checkRequiredLowerCase.isChecked),
+            Pair(checkAccent.isChecked, checkRequiredAccent.isChecked),
+            Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked)
+        )
+    }
+
+    private fun getManagerPassword() =
+        intent!!.extras!!.getSerializable(MANAGER_ARGS) as ManagerPassword
 
     companion object {
         const val MANAGER_ARGS = "m"

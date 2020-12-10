@@ -12,7 +12,7 @@ import com.rittmann.passwordnotify.data.basic.ManagerPassword
 @Dao
 interface ManagerPasswordDAO {
     @RawQuery(observedEntities = [ManagerPassword::class])
-    fun getAll(query: SupportSQLiteQuery): List<ManagerPassword>
+    fun get(query: SupportSQLiteQuery): List<ManagerPassword>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(password: ManagerPassword): Long

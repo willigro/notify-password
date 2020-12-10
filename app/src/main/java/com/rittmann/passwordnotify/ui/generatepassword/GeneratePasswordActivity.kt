@@ -54,7 +54,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
     private fun initView() {
         btnGeneratePassword.setOnClickListener {
             showProgress()
-            viewModel.generatePassword(getPermissions())
+            viewModel.generatePassword(generateManagerPermission())
         }
 
         btnRegister.setOnClickListener {
@@ -62,7 +62,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
 
             val name = "Mocked"
 
-            val manager = getPermissions().apply {
+            val manager = generateManagerPermission().apply {
                 this.name = name
             }
 
@@ -93,7 +93,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
         }
     }
 
-    private fun getPermissions(): ManagerPassword {
+    private fun generateManagerPermission(): ManagerPassword {
         return ManagerPassword(
             0L,
             "",
@@ -109,7 +109,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
     private fun initObservers() {
         viewModel.apply {
 
-            invalidLength().observe(this@GeneratePasswordActivity, {
+            isInvalidLength().observe(this@GeneratePasswordActivity, {
                 edtLength.error = getString(R.string.message_invalid_length)
                 hideProgress()
             })

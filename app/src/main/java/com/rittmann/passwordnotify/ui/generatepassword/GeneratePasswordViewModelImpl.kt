@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 
 interface GeneratePasswordViewModel {
     fun getGeneratedPassword(): LiveData<String>
-    fun invalidLength(): LiveData<Boolean>
+    fun isInvalidLength(): LiveData<Void>
     fun generatePassword(randomPermissions: ManagerPassword)
 }
 
@@ -32,27 +32,27 @@ class GeneratePasswordViewModelFactory : ViewModelProvider.NewInstanceFactory() 
     }
 }
 
-class GeneratePasswordViewModelImpl : BaseViewModel(), GeneratePasswordViewModel {
+open class GeneratePasswordViewModelImpl : BaseViewModel(), GeneratePasswordViewModel {
 
-    private val _password: MutableLiveData<String> = MutableLiveData()
-    private val _invalidLength = SingleLiveEvent<Boolean>()
+     val password: MutableLiveData<String> = MutableLiveData()
+     val invalidLength: SingleLiveEvent<Void> = SingleLiveEvent()
 
-    override fun getGeneratedPassword(): LiveData<String> = _password
-    override fun invalidLength(): LiveData<Boolean> = _invalidLength
+    override fun getGeneratedPassword(): LiveData<String> = password
+    override fun isInvalidLength(): LiveData<Void> = invalidLength
 
     override fun generatePassword(randomPermissions: ManagerPassword) {
         randomPermissions.length.parseToInt({ length ->
-            if (length <= 0 || length > 1000)
-                _invalidLength.call()
+            if (length <= 0 || length > Constants.MAX_PASSWORD_LENGTH)
+                invalidLength.call()
             else {
                 viewModelScope.launch {
                     withContext(Dispatchers.Default) {
-                        _password.postValue(randomPassword(length, randomPermissions))
+                        password.postValue(randomPassword(length, randomPermissions))
                     }
                 }
             }
         }) {
-            _invalidLength.call()
+            invalidLength.call()
         }
     }
 

@@ -10,7 +10,7 @@ import com.rittmann.passwordnotify.support.ExpressoUtil.viewIsNotChecked
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
 import org.junit.Test
 
-class ManagerPasswordTest : ActivityTest() {
+class ManagerPasswordLaunchActivityTest : ActivityTest() {
 
     @Test
     fun checkStartShowingNumbersAndNumberRequired() {
@@ -99,7 +99,7 @@ class ManagerPasswordTest : ActivityTest() {
 
     @Test
     fun checkStartShowingAllUnchecked() {
-        val name = "NotRequired"
+        val name = "AllUnchecked"
         val length = "5"
 
         val manager = ManagerPassword(
