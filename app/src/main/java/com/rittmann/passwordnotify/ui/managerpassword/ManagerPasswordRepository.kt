@@ -8,6 +8,7 @@ import com.rittmann.passwordnotify.data.dao.room.config.selectAll
 import com.rittmann.passwordnotify.data.dao.room.config.toDao
 
 interface ManagerPasswordRepository {
+    fun getAll(): List<ManagerPassword>?
     fun getManagerPasswordById(id: Long): List<ManagerPassword>?
     fun update(managerPassword: ManagerPassword): Int?
     fun register(managerPassword: ManagerPassword): Long?
@@ -16,6 +17,11 @@ interface ManagerPasswordRepository {
 class ManagerPasswordRepositoryImpl(context: Context) : ManagerPasswordRepository {
 
     private val dao = AppDatabase.getDatabase(context)?.managerPasswordDao()
+
+    override fun getAll(): List<ManagerPassword>? {
+        val query = TableManagerPassword.TABLE.selectAll()
+        return dao?.get(query.toDao())
+    }
 
     override fun getManagerPasswordById(id: Long): List<ManagerPassword>? {
         val query = TableManagerPassword.TABLE.selectAll("${TableManagerPassword.ID} = $id")
