@@ -34,7 +34,7 @@ class ManagerPasswordViewModelFactory(private val repository: ManagerPasswordRep
 }
 
 class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordRepository) :
-    GeneratePasswordViewModelImpl(), ManagerPasswordViewModel {
+    GeneratePasswordViewModelImpl(repository), ManagerPasswordViewModel {
 
     private val _managerPassword: MutableLiveData<ManagerPassword> = MutableLiveData()
     private val _invalidName: SingleLiveEvent<Void> = SingleLiveEvent()

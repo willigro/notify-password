@@ -10,9 +10,10 @@ import com.rittmann.passwordnotify.data.dao.room.config.toDao
 interface ManagerPasswordRepository {
     fun getManagerPasswordById(id: Long): List<ManagerPassword>?
     fun update(managerPassword: ManagerPassword): Int?
+    fun register(managerPassword: ManagerPassword): Long?
 }
 
-class ManagerPasswordRepositoryImpl(private val context: Context) : ManagerPasswordRepository {
+class ManagerPasswordRepositoryImpl(context: Context) : ManagerPasswordRepository {
 
     private val dao = AppDatabase.getDatabase(context)?.managerPasswordDao()
 
@@ -23,5 +24,9 @@ class ManagerPasswordRepositoryImpl(private val context: Context) : ManagerPassw
 
     override fun update(managerPassword: ManagerPassword): Int? {
         return dao?.update(managerPassword)
+    }
+
+    override fun register(managerPassword: ManagerPassword): Long? {
+        return dao?.insert(managerPassword)
     }
 }

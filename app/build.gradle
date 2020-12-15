@@ -57,5 +57,5 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.5"
 
     // Others
-    implementation 'com.github.willigro:RobbieAndroidUtil:alpha-1.2.0.0'
+    implementation 'com.github.willigro:RobbieAndroidUtil:alpha-1.2.2.0'
 }

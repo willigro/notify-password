@@ -57,10 +57,6 @@ class ManagerPasswordActivityTest : ActivityTest() {
 
         checkValue(R.id.edtName, name)
         checkValue(R.id.edtLength, length)
-
-        performClick(R.id.checkEnableNotifications)
-
-        checkValue(R.id.edtAmountToNotify, "1")
     }
 
     @Test

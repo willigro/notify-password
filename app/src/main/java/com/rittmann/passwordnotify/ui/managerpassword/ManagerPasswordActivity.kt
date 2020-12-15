@@ -8,9 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
-import kotlinx.android.synthetic.main.activity_manager_password.checkEnableNotifications
-import kotlinx.android.synthetic.main.activity_manager_password.edtAmountToNotify
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
@@ -51,23 +50,13 @@ class ManagerPasswordActivity : BaseAppActivity() {
     }
 
     private fun initViews() {
-        checkEnableNotifications.setOnCheckedChangeListener { _, b ->
-            if (b && edtAmountToNotify.text.isNullOrEmpty())
-                edtAmountToNotify.setText("1")
-        }
-
         btnUpdaterManager.setOnClickListener {
-//            managerPassword?.also {
-//                NotificationWorkerManager.scheduleNextNotification(
-//                    this@ManagerPasswordActivity,
-//                    1,
-//                    "a",
-//                    it
-//                ) // todo mocked
-//            }
-
             val manager = generateManagerPermission()
             viewModel.updateManager(manager)
+        }
+
+        btnScheduleNotification.setOnClickListener {
+
         }
     }
 

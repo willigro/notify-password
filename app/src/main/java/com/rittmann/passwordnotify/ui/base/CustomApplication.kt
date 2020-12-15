@@ -32,7 +32,7 @@ class CustomApplication : Application(), KodeinAware {
     }
 
     private fun Kodein.MainBuilder.bindModels() {
-        bind<GeneratePasswordViewModel>() with provider { GeneratePasswordViewModelImpl() }
+        bind<GeneratePasswordViewModel>() with provider { GeneratePasswordViewModelImpl(instance()) }
         bind<ManagerPasswordViewModel>() with provider { ManagerPasswordViewModelImpl(instance()) }
     }
 
@@ -41,7 +41,7 @@ class CustomApplication : Application(), KodeinAware {
     }
 
     private fun Kodein.MainBuilder.bindViewModelFactories() {
-        bind() from provider { GeneratePasswordViewModelFactory() }
+        bind() from provider { GeneratePasswordViewModelFactory(instance()) }
         bind() from provider { ManagerPasswordViewModelFactory(instance()) }
     }
 }
