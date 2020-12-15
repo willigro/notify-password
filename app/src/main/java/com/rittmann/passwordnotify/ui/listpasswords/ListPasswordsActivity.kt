@@ -1,11 +1,14 @@
 package com.rittmann.passwordnotify.ui.listpasswords
 
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.rittmann.passwordnotify.R
+import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
+import kotlinx.android.synthetic.main.activity_list_passwords.recyclerPassword
 import org.kodein.di.erased.instance
 
 class ListPasswordsActivity : BaseAppActivity() {
@@ -41,7 +44,17 @@ class ListPasswordsActivity : BaseAppActivity() {
             passwordsResult().observe(this@ListPasswordsActivity, {
                 hideProgress()
                 it?.also {
-                    Log.i(com.rittmann.passwordnotify.data.TAG, it.toString())
+                    recyclerPassword.apply {
+                        layoutManager = LinearLayoutManager(this@ListPasswordsActivity)
+                        adapter = RecyclerViewPasswords(this@ListPasswordsActivity, it) { any ->
+                            startActivity(
+                                ManagerPasswordActivity.getIntentManagerPasswordActivity(
+                                    this@ListPasswordsActivity,
+                                    any as ManagerPassword
+                                )
+                            )
+                        }
+                    }
                 }
             })
         }
