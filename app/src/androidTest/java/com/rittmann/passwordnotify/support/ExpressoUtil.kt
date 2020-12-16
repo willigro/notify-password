@@ -12,6 +12,7 @@ import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.core.internal.deps.guava.collect.Iterables
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasErrorText
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
@@ -20,6 +21,14 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
+import com.rittmann.passwordnotify.support.recyclerview.TestUtils.withRecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
@@ -40,6 +49,12 @@ object ExpressoUtil {
         onView(withId(id)).check(matches(hasErrorText(value)))
     }
 
+    fun checkValueRecycler(recyclerId: Int, targetId: Int, position: Int, value: String) {
+        onView(withRecyclerView(recyclerId).atPositionOnView(position, targetId)).check(
+            matches(withText(value))
+        )
+    }
+
     fun viewIsChecked(id: Int) {
         onView(withId(id)).check(matches(isChecked()))
     }
@@ -54,6 +69,10 @@ object ExpressoUtil {
                 perform(scrollTo())
             perform(click())
         }
+    }
+
+    fun performClickRecycler(recyclerId: Int, position: Int) {
+        onView(withRecyclerView(recyclerId).atPosition(position)).perform(click())
     }
 
     fun putValue(id: Int, value: String, withScroll: Boolean = false) {
@@ -137,13 +156,34 @@ object ExpressoUtil {
         )
     }
 
+//    @Throws(Throwable::class)
+//    fun getCurrentActivity(): Activity? {
+//        val activity = arrayOfNulls<Activity>(1)
+//        onView(isRoot()).check { view, _ ->
+//            activity[0] = toActivity(view)
+//        }
+//        return activity[0]
+//    }
+//
+//    private fun toActivity(view: View): Activity? {
+//        var context: Context = view.context
+//        while (context is ContextWrapper) {
+//            if (context is Activity) {
+//                return context
+//            }
+//            context = context.baseContext
+//        }
+//        return null
+//    }
+
     @Throws(Throwable::class)
     fun getCurrentActivity(): Activity? {
+        getInstrumentation().waitForIdleSync()
         val activity = arrayOfNulls<Activity>(1)
-        onView(isRoot()).check { view, _ ->
-            if (view.context is Activity)
-                activity[0] =
-                    view.context as Activity?
+        onView(isRoot()).check { _, _ ->
+            val activities =
+                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            activity[0] = Iterables.getOnlyElement(activities)
         }
         return activity[0]
     }
