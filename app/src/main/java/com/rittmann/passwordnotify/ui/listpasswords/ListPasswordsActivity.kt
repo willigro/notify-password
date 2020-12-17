@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordActivity
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
+import kotlinx.android.synthetic.main.activity_list_passwords.btnNewPassword
 import kotlinx.android.synthetic.main.activity_list_passwords.recyclerPassword
 import org.kodein.di.erased.instance
 
@@ -36,7 +38,9 @@ class ListPasswordsActivity : BaseAppActivity() {
     }
 
     private fun initViews() {
-
+        btnNewPassword.setOnClickListener {
+            startActivity(GeneratePasswordActivity.getIntent(this@ListPasswordsActivity))
+        }
     }
 
     private fun initObservers() {

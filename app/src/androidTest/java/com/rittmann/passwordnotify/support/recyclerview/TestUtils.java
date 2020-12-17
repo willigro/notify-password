@@ -106,5 +106,4 @@ public class TestUtils {
 
         return new RecyclerViewMatcher(recyclerViewId);
     }
-
 }

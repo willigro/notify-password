@@ -3,6 +3,7 @@ package com.rittmann.passwordnotify.support
 import android.app.Activity
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -156,25 +157,28 @@ object ExpressoUtil {
         )
     }
 
-//    @Throws(Throwable::class)
-//    fun getCurrentActivity(): Activity? {
-//        val activity = arrayOfNulls<Activity>(1)
-//        onView(isRoot()).check { view, _ ->
-//            activity[0] = toActivity(view)
-//        }
-//        return activity[0]
-//    }
-//
-//    private fun toActivity(view: View): Activity? {
-//        var context: Context = view.context
-//        while (context is ContextWrapper) {
-//            if (context is Activity) {
-//                return context
-//            }
-//            context = context.baseContext
-//        }
-//        return null
-//    }
+    fun scrollToBottom(resId: Int) {
+        onView(withId(resId)).perform(ScrollToBottomAction())
+    }
+
+    class ScrollToBottomAction : ViewAction {
+        override fun getDescription(): String {
+            return "scroll RecyclerView to bottom"
+        }
+
+        override fun getConstraints(): Matcher<View> {
+            return allOf<View>(isAssignableFrom(RecyclerView::class.java), isDisplayed())
+        }
+
+        override fun perform(uiController: UiController?, view: View?) {
+            val recyclerView = view as RecyclerView
+            val itemCount = recyclerView.adapter?.itemCount
+            val position = itemCount?.minus(1) ?: 0
+            recyclerView.scrollToPosition(position)
+            uiController?.loopMainThreadUntilIdle()
+        }
+    }
+
 
     @Throws(Throwable::class)
     fun getCurrentActivity(): Activity? {

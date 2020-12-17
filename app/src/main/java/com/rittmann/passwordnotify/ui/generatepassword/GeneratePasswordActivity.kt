@@ -1,5 +1,7 @@
 package com.rittmann.passwordnotify.ui.generatepassword
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.annotation.VisibleForTesting
@@ -56,7 +58,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
         }
 
         btnRegister.setOnClickListener {
-            if (txtPassword.text.isNullOrEmpty()){
+            if (txtPassword.text.isNullOrEmpty()) {
                 toast(R.string.message_error_generate_the_password)
                 return@setOnClickListener
             }
@@ -130,5 +132,9 @@ class GeneratePasswordActivity : BaseAppActivity() {
                 hideProgress()
             })
         }
+    }
+
+    companion object {
+        fun getIntent(context: Context) = Intent(context, GeneratePasswordActivity::class.java)
     }
 }

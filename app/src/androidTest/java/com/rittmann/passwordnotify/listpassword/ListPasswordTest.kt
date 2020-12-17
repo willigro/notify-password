@@ -10,10 +10,14 @@ import com.rittmann.passwordnotify.data.dao.room.config.toDao
 import com.rittmann.passwordnotify.support.ActivityTest
 import com.rittmann.passwordnotify.support.ExpressoUtil.checkValueRecycler
 import com.rittmann.passwordnotify.support.ExpressoUtil.getCurrentActivity
+import com.rittmann.passwordnotify.support.ExpressoUtil.performClick
 import com.rittmann.passwordnotify.support.ExpressoUtil.performClickRecycler
+import com.rittmann.passwordnotify.support.ExpressoUtil.scrollToBottom
+import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordActivity
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordsActivity
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
 import java.util.*
+import kotlinx.android.synthetic.main.activity_list_passwords.btnNewPassword
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
@@ -50,6 +54,7 @@ class ListPasswordTest : ActivityTest() {
         val pos = list!!.size - 1
 
         R.id.recyclerPassword.apply {
+            scrollToBottom(this)
             checkValueRecycler(this, R.id.txtName, pos, mock.name)
         }
     }
@@ -76,11 +81,21 @@ class ListPasswordTest : ActivityTest() {
         val pos = list!!.size - 1
 
         R.id.recyclerPassword.apply {
+            scrollToBottom(this)
             checkValueRecycler(this, R.id.txtName, pos, mock.name)
             performClickRecycler(this, pos)
         }
 
         assertEquals(true, getCurrentActivity() is ManagerPasswordActivity)
+    }
+
+    @Test
+    fun openGeneratePasswordScreenWhenBtnIsChick() {
+        scenario = ActivityScenario.launch(ListPasswordsActivity::class.java)
+
+        performClick(R.id.btnNewPassword)
+
+        assertEquals(true, getCurrentActivity() is GeneratePasswordActivity)
     }
 
     private fun mockManager(): ManagerPassword {
