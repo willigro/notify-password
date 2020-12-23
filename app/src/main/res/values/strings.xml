@@ -17,4 +17,9 @@
     <!-- Manager Password -->
     <string name="for_security_enable_notifications">Por segurança, habilite as notificações de mudança da senha a cada: %s TEMPOS</string>
     <string name="message_invalid_name">Informe um nome!</string>
+    <string name="new_notification">Notificação</string>
+    <string name="update_password">Manter alterações</string>
+
+    <!-- Lits Passwords -->
+    <string name="open_new_password_screen">Gerar nova senha</string>
 </resources>
