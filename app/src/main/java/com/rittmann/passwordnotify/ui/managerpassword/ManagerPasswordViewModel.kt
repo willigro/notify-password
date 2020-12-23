@@ -21,9 +21,11 @@ interface ManagerPasswordViewModel {
     fun nameIsInvalid(): LiveData<Void>
     fun isInvalidLength(): LiveData<Void>
     fun isUpdateFailed(): LiveData<Void>
+    fun deleteResult(): LiveData<Boolean>
 
     // Functions
     fun updateManager(managerPassword: ManagerPassword)
+    fun deleteManager()
 }
 
 class ManagerPasswordViewModelFactory(private val repository: ManagerPasswordRepository) :
@@ -40,6 +42,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     private val _managerPassword: MutableLiveData<ManagerPassword> = MutableLiveData()
     private val _invalidName: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _updateInvalid: SingleLiveEvent<Void> = SingleLiveEvent()
+    private val _deleteResult: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     override fun setManager(managerPassword: ManagerPassword) {
         _managerPassword.value = managerPassword
@@ -50,6 +53,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     override fun getGeneratedPassword(): LiveData<String> = password
     override fun isInvalidLength(): LiveData<Void> = invalidLength
     override fun isUpdateFailed(): LiveData<Void> = _updateInvalid
+    override fun deleteResult(): LiveData<Boolean> = _deleteResult
 
     override fun updateManager(managerPassword: ManagerPassword) {
         if (isValidFields(managerPassword)) {
@@ -71,6 +75,22 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
         }
     }
 
+    override fun deleteManager() {
+        _managerPassword.value?.apply {
+            viewModelScope.launch {
+
+                withContext(Dispatchers.IO) {
+                    repository.delete(this@apply).also { res ->
+
+                        withContext(Dispatchers.Main) {
+                            _deleteResult.value = res != null && res > 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun isValidFields(managerPassword: ManagerPassword): Boolean {
         var isValid = true
         if (managerPassword.name.isEmpty()) {
@@ -78,7 +98,9 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
             isValid = false
         }
 
-        if (managerPassword.length.isNullOrEmpty() || managerPassword.length.isPositiveNumber().not()) {
+        if (managerPassword.length.isNullOrEmpty() || managerPassword.length.isPositiveNumber()
+                .not()
+        ) {
             invalidLength.call()
             isValid = false
         }

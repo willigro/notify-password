@@ -33,6 +33,7 @@ class ListPasswordViewModelImpl(private val repository: ManagerPasswordRepositor
     override fun passwordsResult(): LiveData<List<ManagerPassword>> = _passwords
 
     override fun getAllPasswords() {
+        showProgress()
         viewModelScope.launch {
             val all = withContext(Dispatchers.IO) {
                 repository.getAll()

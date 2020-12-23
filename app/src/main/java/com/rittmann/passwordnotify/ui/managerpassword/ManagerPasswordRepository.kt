@@ -12,6 +12,7 @@ interface ManagerPasswordRepository {
     fun getManagerPasswordById(id: Long): List<ManagerPassword>?
     fun update(managerPassword: ManagerPassword): Int?
     fun register(managerPassword: ManagerPassword): Long?
+    fun delete(managerPassword: ManagerPassword): Int?
 }
 
 class ManagerPasswordRepositoryImpl(context: Context) : ManagerPasswordRepository {
@@ -34,5 +35,9 @@ class ManagerPasswordRepositoryImpl(context: Context) : ManagerPasswordRepositor
 
     override fun register(managerPassword: ManagerPassword): Long? {
         return dao?.insert(managerPassword)
+    }
+
+    override fun delete(managerPassword: ManagerPassword): Int? {
+        return dao?.delete(managerPassword)
     }
 }

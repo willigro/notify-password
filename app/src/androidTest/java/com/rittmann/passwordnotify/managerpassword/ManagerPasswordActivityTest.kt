@@ -245,4 +245,47 @@ class ManagerPasswordActivityTest : PasswordSupportTest() {
 
         performClick(R.id.btnUpdaterManager)
     }
+
+    @Test
+    fun deletePasswordManager() {
+        val manager = mockManager()
+
+        insertManager(manager)
+        assertNotEquals(0L, manager.id)
+
+        scenario = ActivityScenario.launch(
+            ManagerPasswordActivity.getIntentManagerPasswordActivity(
+                context,
+                manager
+            )
+        )
+
+        putValue(R.id.edtLength, "2")
+        putValue(R.id.edtName, "updatedName")
+
+        scenario?.onActivity {
+            it.viewModel.apply {
+                deleteResult().observeForever { result ->
+                    assertEquals(true, result)
+
+                    GlobalScope.launch {
+                        val list = withContext(Dispatchers.IO) {
+                            getAll()
+                        }
+
+                        list?.forEach { m ->
+                            if (m.id == manager.id)
+                                fail()
+                        }
+                    }
+                }
+
+                isUpdateFailed().observeForever {
+                    fail()
+                }
+            }
+        }
+
+        performClick(R.id.btnDelete)
+    }
 }

@@ -1,5 +1,6 @@
 package com.rittmann.passwordnotify.ui.managerpassword
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
@@ -58,6 +60,10 @@ class ManagerPasswordActivity : BaseAppActivity() {
         btnScheduleNotification.setOnClickListener {
 
         }
+
+        btnDelete.setOnClickListener {
+            viewModel.deleteManager()
+        }
     }
 
     private fun initObservers() {
@@ -101,6 +107,14 @@ class ManagerPasswordActivity : BaseAppActivity() {
             isUpdateFailed().observe(this@ManagerPasswordActivity, {
                 // todo implement
                 hideProgress()
+            })
+
+            deleteResult().observe(this@ManagerPasswordActivity, {
+                hideProgress()
+                if (it!!) {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
             })
         }
     }

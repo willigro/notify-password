@@ -1,5 +1,7 @@
 package com.rittmann.passwordnotify.ui.listpasswords
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
@@ -30,11 +32,17 @@ class ListPasswordsActivity : BaseAppActivity() {
             ListPasswordViewModelImpl::class.java
         )
 
-        showProgress()
         viewModel.getAllPasswords()
 
         initViews()
         initObservers()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == OPEN_MANAGER && resultCode == Activity.RESULT_OK) {
+            viewModel.getAllPasswords()
+        }
     }
 
     private fun initViews() {
@@ -46,21 +54,26 @@ class ListPasswordsActivity : BaseAppActivity() {
     private fun initObservers() {
         viewModel.apply {
             passwordsResult().observe(this@ListPasswordsActivity, {
-                hideProgress()
                 it?.also {
                     recyclerPassword.apply {
                         layoutManager = LinearLayoutManager(this@ListPasswordsActivity)
                         adapter = RecyclerViewPasswords(this@ListPasswordsActivity, it) { any ->
-                            startActivity(
+                            startActivityForResult(
                                 ManagerPasswordActivity.getIntentManagerPasswordActivity(
                                     this@ListPasswordsActivity,
                                     any as ManagerPassword
-                                )
+                                ),
+                                OPEN_MANAGER
                             )
                         }
                     }
                 }
+                hideProgress()
             })
         }
+    }
+
+    companion object {
+        const val OPEN_MANAGER = 1
     }
 }

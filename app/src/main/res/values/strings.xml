@@ -19,6 +19,7 @@
     <string name="message_invalid_name">Informe um nome!</string>
     <string name="new_notification">Notificação</string>
     <string name="update_password">Manter alterações</string>
+    <string name="remove_password">Deletar senha</string>
 
     <!-- Lits Passwords -->
     <string name="open_new_password_screen">Gerar nova senha</string>
