@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rittmann.baselifecycle.livedata.SingleLiveEvent
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
+import com.rittmann.passwordnotify.data.extensions.isPositiveNumber
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModelImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,7 +78,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
             isValid = false
         }
 
-        if (managerPassword.length.isNullOrEmpty()) {
+        if (managerPassword.length.isNullOrEmpty() || managerPassword.length.isPositiveNumber().not()) {
             invalidLength.call()
             isValid = false
         }

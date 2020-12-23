@@ -26,10 +26,6 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.rittmann.passwordnotify.support.recyclerview.TestUtils.withRecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
@@ -179,6 +175,15 @@ object ExpressoUtil {
         }
     }
 
+    class ExecuteOn(private val callTime: Int) {
+        var current = 1
+
+        fun next(callback: () -> Unit) {
+            if (current == callTime)
+                callback()
+            current++
+        }
+    }
 
     @Throws(Throwable::class)
     fun getCurrentActivity(): Activity? {
