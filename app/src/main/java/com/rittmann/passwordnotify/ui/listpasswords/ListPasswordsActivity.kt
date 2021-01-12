@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_list_passwords.btnNewPassword
 import kotlinx.android.synthetic.main.activity_list_passwords.recyclerPassword
 import org.kodein.di.erased.instance
 
+
 class ListPasswordsActivity : BaseAppActivity() {
 
     override var resIdViewReference: Int = R.id.content

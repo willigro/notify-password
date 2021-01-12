@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PasswordNotify</string>
 
+    <!-- Login -->
+    <string name="auth_title_keyguard_secure">Password Notify</string>
+    <string name="auth_message_keyguard_secure">Desbloquei seu app realizando um login rápido</string>
+
     <!-- Generate Password -->
     <string name="option_numbers">Números</string>
     <string name="option_upper">LETRAS MAISCULAS</string>
