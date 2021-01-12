@@ -1,19 +1,21 @@
 package com.rittmann.passwordnotify.data.dao.room.config
 
 import androidx.room.TypeConverter
+import com.rittmann.androidtools.dateutil.DateUtilImpl
+import java.util.*
 
 class Converters {
-//    @TypeConverter
-//    fun fromTimestamp(value: String?): Calendar? {
-//        if (value == null) return null
-//        return DateUtil.parseDate(value, DateUtil.DB_FORMAT)
-//    }
-//
-//    @TypeConverter
-//    fun dateToTimestamp(date: Calendar?): String? {
-//        if (date == null) return null
-//        return DateUtil.simpleDateFormat(date, DateUtil.DB_FORMAT)
-//    }
+    @TypeConverter
+    fun fromTimestamp(value: String?): Calendar? {
+        if (value == null) return null
+        return DateUtilImpl.parseDate(value, DateUtilImpl.SIMPLE_DATE_FORMAT)
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Calendar?): String? {
+        if (date == null) return null
+        return DateUtilImpl.dateFormat(date, DateUtilImpl.SIMPLE_DATE_FORMAT)
+    }
 
     @TypeConverter
     fun stringToPair(value: String?): Pair<Boolean, Boolean>? {

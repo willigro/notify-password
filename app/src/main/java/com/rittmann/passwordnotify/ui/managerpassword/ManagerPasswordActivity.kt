@@ -4,11 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
+import com.rittmann.passwordnotify.data.extensions.toIntOrZero
+import com.rittmann.passwordnotify.data.extensions.watcherAfter
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.widgets.dialog.DialogUtil
+import com.rittmann.widgets.dialog.dialog
 import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
@@ -29,6 +35,7 @@ import org.kodein.di.erased.instance
 class ManagerPasswordActivity : BaseAppActivity() {
 
     override var resIdViewReference: Int = R.id.content
+    private var modal: DialogUtil? = null
 
     private val viewModelFactory: ManagerPasswordViewModelFactory by instance()
 
@@ -58,7 +65,31 @@ class ManagerPasswordActivity : BaseAppActivity() {
         }
 
         btnScheduleNotification.setOnClickListener {
+            modal = dialog(
+                "title",
+                "message",
+                cancelable = true,
+                resId = R.layout.schedule_notification
+            ).also { m ->
+                m.dialogView.apply {
+                    val label = findViewById<TextView>(R.id.txtScheduleNotification)
+                    label.text = getString(R.string.schedule_a_notification_for_each).format(0)
 
+                    findViewById<EditText>(R.id.edtEachDays).watcherAfter {
+                        label.text = getString(R.string.schedule_a_notification_for_each).format(
+                            it.toString().toIntOrZero()
+                        )
+                    }
+                }
+            }
+
+            modal?.handleShow({
+                val days =
+                    modal!!.dialogView.findViewById<EditText>(R.id.edtEachDays).text.toString()
+                        .toIntOrZero()
+
+                viewModel.scheduleNotification(days)
+            })
         }
 
         btnDelete.setOnClickListener {
@@ -94,6 +125,19 @@ class ManagerPasswordActivity : BaseAppActivity() {
                 }
             })
 
+            getManagerPasswordToScheduleNotificationData().observe(this@ManagerPasswordActivity, {
+                modal?.dismiss()
+                WorkManagerNotify().sendPeriodic(
+                    this@ManagerPasswordActivity,
+                    it.eachDaysToNotify.toLong(),
+                    Notification(
+                        managerPassword!!.id,
+                        getString(R.string.notification_title_change_your_password),
+                        getString(R.string.notification_message_change_your_password)
+                    )
+                )
+            })
+
             nameIsInvalid().observe(this@ManagerPasswordActivity, {
                 edtName.error = getString(R.string.message_invalid_name)
                 hideProgress()
@@ -106,6 +150,12 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
             isUpdateFailed().observe(this@ManagerPasswordActivity, {
                 // todo implement
+                hideProgress()
+            })
+
+            isUpdateToScheduleNotificationFailed().observe(this@ManagerPasswordActivity, {
+                // todo implement
+                modal?.dismiss()
                 hideProgress()
             })
 

@@ -27,3 +27,11 @@ fun String?.isPositiveNumber(): Boolean {
         false
     }
 }
+
+fun String?.toIntOrZero(): Int {
+    return try {
+        return this!!.toInt()
+    } catch (e: Exception) {
+        0
+    }
+}

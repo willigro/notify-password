@@ -10,4 +10,6 @@ object TableManagerPassword {
     const val UPPERCASE = "uppercase_manager_password"
     const val SPECIAL = "special_manager_password"
     const val ACCENTS = "accents_manager_password"
+    const val EACH_DAYS_TO_NOTIFY = "each_days_to_notify"
+    const val NOTIFY_DATE_FROM = "notify_date_from"
 }

@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.rittmann.baselifecycle.base.BaseViewModel
 import com.rittmann.baselifecycle.livedata.SingleLiveEvent
-import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.Constants
 import com.rittmann.passwordnotify.data.TAG
+import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.extensions.parseToInt
 import com.rittmann.passwordnotify.data.extensions.replaceFor
 import com.rittmann.passwordnotify.data.extensions.somethingContainsIn
+import com.rittmann.passwordnotify.ui.base.BaseAppViewModel
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordRepository
 import java.util.*
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,7 @@ class GeneratePasswordViewModelFactory(private val repository: ManagerPasswordRe
 }
 
 open class GeneratePasswordViewModelImpl(private val repository: ManagerPasswordRepository) :
-    BaseViewModel(), GeneratePasswordViewModel {
+    BaseAppViewModel(), GeneratePasswordViewModel {
 
     val password: MutableLiveData<String> = MutableLiveData()
     val invalidLength: SingleLiveEvent<Void> = SingleLiveEvent()
