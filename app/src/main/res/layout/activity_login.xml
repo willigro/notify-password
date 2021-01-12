@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:id="@+id/labelLogin"
+        style="@style/TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/EditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelLogin" />
+
+    <EditText
+        android:id="@+id/edtPasswordConfirmation"
+        style="@style/EditText"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+        tools:visibility="visible" />
+
+    <Button
+        style="@style/Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirmation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

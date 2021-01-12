@@ -13,3 +13,9 @@ object TableManagerPassword {
     const val EACH_DAYS_TO_NOTIFY = "each_days_to_notify"
     const val NOTIFY_DATE_FROM = "notify_date_from"
 }
+
+object TableLogin {
+    const val TABLE = "tb_login"
+    const val ID = "id_login"
+    const val PASSWORD = "password_login"
+}
