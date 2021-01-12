@@ -51,12 +51,14 @@ class WorkManagerNotify {
 class WorkerNotify(private val context: Context, workerParameters: WorkerParameters) :
     Worker(context, workerParameters) {
     override fun doWork(): Result {
+        if (isStopped.not()) {
+            val id = inputData.getLong(ID, 1L)
+            val title = inputData.getString(TITLE)
+            val description = inputData.getString(DESCRIPTION)
 
-        val id = inputData.getLong(ID, 1L)
-        val title = inputData.getString(TITLE)
-        val description = inputData.getString(DESCRIPTION)
+            NotificationController().create(context, id, title, description)
+        }
 
-        NotificationController().create(context, id, title, description)
         return Result.success()
     }
 }

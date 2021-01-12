@@ -117,7 +117,6 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
             notificationDateFrom = if (days > 0) {
                 DateUtilImpl.today()
             } else {
-                _cancelNotification.call()
                 null
             }
 
@@ -127,7 +126,10 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
                     withContext(Dispatchers.Main) {
                         if (res != null && res > 0) {
                             _managerPassword.value = this@apply
-                            _managerPasswordToScheduleNotification.value = this@apply
+                            if (days > 0)
+                                _managerPasswordToScheduleNotification.value = this@apply
+                            else
+                                _cancelNotification.call()
                         } else {
                             _updateInvalidToScheduleNotification.call()
                         }

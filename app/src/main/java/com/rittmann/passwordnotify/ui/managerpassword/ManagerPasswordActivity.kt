@@ -200,6 +200,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
             cancelNotification().observe(this@ManagerPasswordActivity, {
                 WorkManagerNotify().cancel(this@ManagerPasswordActivity, managerPassword?.id ?: 0L)
+                modal?.dismiss()
             })
         }
     }
