@@ -40,4 +40,8 @@ open class PasswordSupportTest : ActivityTest() {
     protected fun insertManager(manager: ManagerPassword) {
         manager.id = AppDatabase.getDatabase(context)?.managerPasswordDao()?.insert(manager) ?: 0L
     }
+
+    protected fun deleteAll(){
+        AppDatabase.getDatabase(context)?.managerPasswordDao()?.deleteAll()
+    }
 }

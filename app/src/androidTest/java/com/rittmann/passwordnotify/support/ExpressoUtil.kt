@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
@@ -195,5 +196,9 @@ object ExpressoUtil {
             activity[0] = Iterables.getOnlyElement(activities)
         }
         return activity[0]
+    }
+
+    fun pressBack() {
+        onView(isRoot()).perform(ViewActions.pressBack())
     }
 }

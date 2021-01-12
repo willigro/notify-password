@@ -4,10 +4,12 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
+import com.rittmann.passwordnotify.data.dao.room.config.TableManagerPassword
 
 @Dao
 interface ManagerPasswordDAO {
@@ -22,4 +24,7 @@ interface ManagerPasswordDAO {
 
     @Delete
     fun delete(password: ManagerPassword): Int
+
+    @Query("DELETE FROM ${TableManagerPassword.TABLE}")
+    fun deleteAll()
 }
