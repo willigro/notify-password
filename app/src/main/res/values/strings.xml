@@ -23,6 +23,8 @@
     <string name="schedule_a_notification_for_each">Agende uma notificação de atualização do valor para cada %s dias (informando 0, não haverá notificações)</string>
     <string name="notification_title_change_your_password">Atualize a sua senha</string>
     <string name="notification_message_change_your_password">Ao atualizar a sua senha você mantem suas contas associadas seguras, gere uma nova e a utilize.</string>
+    <string name="notification_not_found">Não há uma notificação de atualização agendada.</string>
+    <string name="notification_description">Notificação criada em %s, agendada para %s.</string>
 
     <!-- Lits Passwords -->
     <string name="open_new_password_screen">Gerar nova senha</string>

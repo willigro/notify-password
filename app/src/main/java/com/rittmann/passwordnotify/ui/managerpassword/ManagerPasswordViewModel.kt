@@ -26,6 +26,7 @@ interface ManagerPasswordViewModel {
     fun isUpdateFailed(): LiveData<Void>
     fun isUpdateToScheduleNotificationFailed(): LiveData<Void>
     fun deleteResult(): LiveData<Boolean>
+    fun cancelNotification(): LiveData<Boolean>
 
     // Functions
     fun updateManager(managerPassword: ManagerPassword)
@@ -51,6 +52,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     private val _updateInvalid: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _updateInvalidToScheduleNotification: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _deleteResult: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val _cancelNotification: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     override fun setManager(managerPassword: ManagerPassword) {
         _managerPassword.value = managerPassword
@@ -68,10 +70,19 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
         _updateInvalidToScheduleNotification
 
     override fun deleteResult(): LiveData<Boolean> = _deleteResult
+    override fun cancelNotification(): LiveData<Boolean> = _cancelNotification
 
     override fun updateManager(managerPassword: ManagerPassword) {
         if (isValidFields(managerPassword)) {
             executeAsync {
+                managerPassword.apply {
+                    _managerPassword.value?.also {
+                        id = it.id
+                        notificationDateFrom = it.notificationDateFrom
+                        eachDaysToNotify = it.eachDaysToNotify
+                    }
+                }
+
                 repository.update(managerPassword).also { res ->
 
                     withContext(Dispatchers.Main) {
@@ -100,20 +111,25 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     }
 
     override fun scheduleNotification(days: Int) {
-        if (days > 0) {
-            _managerPassword.value!!.apply {
-                eachDaysToNotify = days
-                notificationDateFrom = DateUtilImpl.today()
+        _managerPassword.value!!.apply {
+            eachDaysToNotify = days
 
-                executeAsync {
-                    repository.update(this@apply).also { res ->
+            notificationDateFrom = if (days > 0) {
+                DateUtilImpl.today()
+            } else {
+                _cancelNotification.call()
+                null
+            }
 
-                        withContext(Dispatchers.Main) {
-                            if (res != null && res > 0) {
-                                _managerPasswordToScheduleNotification.value = this@apply
-                            } else {
-                                _updateInvalidToScheduleNotification.call()
-                            }
+            executeAsync {
+                repository.update(this@apply).also { res ->
+
+                    withContext(Dispatchers.Main) {
+                        if (res != null && res > 0) {
+                            _managerPassword.value = this@apply
+                            _managerPasswordToScheduleNotification.value = this@apply
+                        } else {
+                            _updateInvalidToScheduleNotification.call()
                         }
                     }
                 }

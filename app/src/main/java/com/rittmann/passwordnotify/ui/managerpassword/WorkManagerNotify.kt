@@ -26,7 +26,7 @@ class WorkManagerNotify {
         builder.putString(TITLE, notification.title)
         builder.putString(DESCRIPTION, notification.message)
 
-        val timeUnit = TimeUnit.MINUTES
+        val timeUnit = TimeUnit.DAYS
         PeriodicWorkRequest.Builder(
             WorkerNotify::class.java,
             timeToSend,
@@ -41,6 +41,10 @@ class WorkManagerNotify {
                 build()
             )
         }
+    }
+
+    fun cancel(context: Context, id: Long) {
+        WorkManager.getInstance(context).cancelUniqueWork(id.toString())
     }
 }
 
@@ -77,7 +81,11 @@ class NotificationController {
         notify(context, notificationId, builder)
     }
 
-    private fun notify(context: Context, notificationId: Long, builder: NotificationCompat.Builder) {
+    private fun notify(
+        context: Context,
+        notificationId: Long,
+        builder: NotificationCompat.Builder
+    ) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         createNotificationChannel(context)

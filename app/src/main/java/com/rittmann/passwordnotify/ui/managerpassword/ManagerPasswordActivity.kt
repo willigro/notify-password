@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
+import com.rittmann.androidtools.dateutil.DateUtilImpl
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.extensions.toIntOrZero
@@ -15,10 +16,15 @@ import com.rittmann.passwordnotify.data.extensions.watcherAfter
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.widgets.dialog.DialogUtil
 import com.rittmann.widgets.dialog.dialog
+import com.rittmann.widgets.extensions.gone
+import com.rittmann.widgets.extensions.visible
+import java.util.*
 import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
+import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationDescription
+import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationsNotFound
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers
@@ -122,6 +128,31 @@ class ManagerPasswordActivity : BaseAppActivity() {
                         checkAccent.isChecked = accents.first
                         checkRequiredAccent.isChecked = accents.second
                     }
+
+                    if (it.notificationDateFrom == null) {
+                        labelNotificationsNotFound.visible()
+                        labelNotificationDescription.gone()
+                    } else {
+                        labelNotificationsNotFound.gone()
+                        labelNotificationDescription.apply {
+                            visible()
+
+                            val notificationDateTo: Calendar =
+                                it.notificationDateFrom!!.clone() as Calendar
+                            notificationDateTo.add(Calendar.DAY_OF_MONTH, it.eachDaysToNotify)
+
+                            text = getString(R.string.notification_description).format(
+                                DateUtilImpl.dateFormat(
+                                    it.notificationDateFrom!!,
+                                    DateUtilImpl.SIMPLE_DATE_FORMAT
+                                ),
+                                DateUtilImpl.dateFormat(
+                                    notificationDateTo,
+                                    DateUtilImpl.SIMPLE_DATE_FORMAT
+                                )
+                            )
+                        }
+                    }
                 }
             })
 
@@ -166,12 +197,16 @@ class ManagerPasswordActivity : BaseAppActivity() {
                     finish()
                 }
             })
+
+            cancelNotification().observe(this@ManagerPasswordActivity, {
+                WorkManagerNotify().cancel(this@ManagerPasswordActivity, managerPassword?.id ?: 0L)
+            })
         }
     }
 
     private fun generateManagerPermission(): ManagerPassword {
         return ManagerPassword(
-            id = managerPassword?.id ?: 0L,
+            id = 0L,
             edtName.text.toString(),
             edtLength.text.toString(),
             Pair(checkNumbers.isChecked, checkRequiredNumbers.isChecked),
