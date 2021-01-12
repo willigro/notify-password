@@ -42,6 +42,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
     override var resIdViewReference: Int = R.id.content
     private var modal: DialogUtil? = null
+    private var isUpdated = false
 
     private val viewModelFactory: ManagerPasswordViewModelFactory by instance()
 
@@ -62,6 +63,12 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
         initViews()
         initObservers()
+    }
+
+    override fun onBackPressed() {
+        if (isUpdated)
+            setResult(Activity.RESULT_OK)
+        super.onBackPressed()
     }
 
     private fun initViews() {
@@ -201,6 +208,10 @@ class ManagerPasswordActivity : BaseAppActivity() {
             cancelNotification().observe(this@ManagerPasswordActivity, {
                 WorkManagerNotify().cancel(this@ManagerPasswordActivity, managerPassword?.id ?: 0L)
                 modal?.dismiss()
+            })
+
+            isUpdated().observe(this@ManagerPasswordActivity, {
+                isUpdated = true
             })
         }
     }

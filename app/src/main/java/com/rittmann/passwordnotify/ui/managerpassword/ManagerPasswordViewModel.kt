@@ -27,6 +27,7 @@ interface ManagerPasswordViewModel {
     fun isUpdateToScheduleNotificationFailed(): LiveData<Void>
     fun deleteResult(): LiveData<Boolean>
     fun cancelNotification(): LiveData<Boolean>
+    fun isUpdated(): LiveData<Boolean>
 
     // Functions
     fun updateManager(managerPassword: ManagerPassword)
@@ -53,6 +54,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     private val _updateInvalidToScheduleNotification: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _deleteResult: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val _cancelNotification: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    private val _isUpdated: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     override fun setManager(managerPassword: ManagerPassword) {
         _managerPassword.value = managerPassword
@@ -71,6 +73,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
 
     override fun deleteResult(): LiveData<Boolean> = _deleteResult
     override fun cancelNotification(): LiveData<Boolean> = _cancelNotification
+    override fun isUpdated(): LiveData<Boolean> = _isUpdated
 
     override fun updateManager(managerPassword: ManagerPassword) {
         if (isValidFields(managerPassword)) {
@@ -88,6 +91,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
                     withContext(Dispatchers.Main) {
                         if (res != null && res > 0) {
                             _managerPassword.value = managerPassword
+                            _isUpdated.call()
                         } else {
                             _updateInvalid.call()
                         }
@@ -130,6 +134,8 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
                                 _managerPasswordToScheduleNotification.value = this@apply
                             else
                                 _cancelNotification.call()
+
+                            _isUpdated.call()
                         } else {
                             _updateInvalidToScheduleNotification.call()
                         }
