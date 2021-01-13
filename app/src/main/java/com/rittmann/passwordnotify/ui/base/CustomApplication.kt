@@ -2,6 +2,7 @@ package com.rittmann.passwordnotify.ui.base
 
 import android.app.Application
 import android.content.Context
+import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModel
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModelFactory
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModelImpl
@@ -15,6 +16,7 @@ import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordRepositoryI
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordViewModel
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordViewModelFactory
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordViewModelImpl
+import com.rittmann.widgets.dialog.DialogUtil
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.*
@@ -22,6 +24,11 @@ import org.kodein.di.erased.*
 fun Context.asApp() = this.applicationContext as CustomApplication
 
 class CustomApplication : Application(), KodeinAware {
+
+    override fun onCreate() {
+        super.onCreate()
+        DialogUtil.defaultTitle = getString(R.string.app_name)
+    }
 
     var testModule: Kodein.Module? = null
 

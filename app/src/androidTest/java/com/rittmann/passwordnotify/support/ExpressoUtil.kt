@@ -43,6 +43,13 @@ object ExpressoUtil {
         }.check(matches(withText(containsString(value))))
     }
 
+    fun checkValue(value: String, withScroll: Boolean = false) {
+        onView(allOf(withText(value))).apply {
+            if (withScroll)
+                perform(scrollTo())
+        }.check(matches(isDisplayed()))
+    }
+
     fun checkValueError(id: Int, value: String, withScroll: Boolean = false) {
         onView(withId(id)).check(matches(hasErrorText(value)))
     }

@@ -11,6 +11,7 @@ import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordsActivity
+import com.rittmann.widgets.dialog.dialog
 import com.rittmann.widgets.extensions.isVisible
 import com.rittmann.widgets.extensions.visible
 import kotlinx.android.synthetic.main.activity_login.btnDoLogin
@@ -95,9 +96,13 @@ class LoginActivity : BaseAppActivity() {
             })
 
             passwordIsNotValid.observe(this@LoginActivity, {
+                dialog(
+                    message = getString(R.string.error_password_not_match_on_base),
+                    ok = true,
+                    show = true
+                )
                 hideProgress()
             })
-
 
             observeLoading(this)
         }

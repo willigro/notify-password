@@ -6,6 +6,7 @@ import com.rittmann.passwordnotify.data.basic.Login
 import com.rittmann.passwordnotify.data.dao.room.config.AppDatabase
 import com.rittmann.passwordnotify.support.ActivityTest
 import com.rittmann.passwordnotify.support.ExpressoUtil
+import com.rittmann.passwordnotify.support.ExpressoUtil.checkValue
 import com.rittmann.passwordnotify.support.ExpressoUtil.checkValueError
 import com.rittmann.passwordnotify.support.ExpressoUtil.performClick
 import com.rittmann.passwordnotify.support.ExpressoUtil.putValue
@@ -160,6 +161,50 @@ class LoginActivityTest : ActivityTest() {
         performClick(R.id.btnDoLogin)
 
         Assert.assertEquals(true, ExpressoUtil.getCurrentActivity() is ListPasswordsActivity)
+    }
+
+    @Test
+    fun showErrorWhenPasswordInformedDoesNotMatchWithTheRegisteredPassword() {
+        val password = "Pass"
+        deleteAllLogin()
+        mockLogin(password)
+
+        scenario = ActivityScenario.launch(LoginActivity::class.java).onActivity {
+            it.viewModel.apply {
+                passwordNotFound.observeForever {
+                    fail()
+                }
+
+                passwordConfirmationNotFound.observeForever {
+                    fail()
+                }
+
+                passwordDoesNotMatchWithConfirmation.observeForever {
+                    fail()
+                }
+
+                passwordRegistered.observeForever {
+                    fail()
+                }
+
+                passwordNotRegistered.observeForever {
+                    fail()
+                }
+
+                passwordIsValid.observeForever {
+                    fail()
+                }
+            }
+        }
+
+        viewNotIsDisplayed(R.id.edtPasswordConfirmation)
+        viewNotIsDisplayed(R.id.labelLoginConfirmation)
+
+        putValue(R.id.edtPassword, "Wrong pass")
+
+        performClick(R.id.btnDoLogin)
+
+        checkValue(context.getString(R.string.error_password_not_match_on_base))
     }
 
     private fun deleteAllLogin() {
