@@ -4,17 +4,54 @@ import android.app.KeyguardManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
+import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.widgets.extensions.visible
+import kotlinx.android.synthetic.main.activity_login.edtPasswordConfirmation
+import kotlinx.android.synthetic.main.activity_login.labelLoginConfirmation
+import org.kodein.di.erased.instance
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseAppActivity() {
+
+    override var resIdViewReference: Int = R.id.content
+
+    private val viewModelFactory: LoginViewModelFactory by instance()
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    lateinit var viewModel: LoginViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        viewModel = ViewModelProvider(this, viewModelFactory).get(
+            LoginViewModel::class.java
+        )
+
+        initObservers()
         checkKeyguard()
+
+        viewModel.hasLoginRegistered()
+    }
+
+    private fun initObservers() {
+        viewModel.apply {
+            hasLoginRegistered.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
+            loginNotFound.observe(this@LoginActivity, {
+                edtPasswordConfirmation.visible()
+                labelLoginConfirmation.visible()
+                hideProgress()
+            })
+
+            observeLoading(this)
+        }
     }
 
     private fun checkKeyguard() {

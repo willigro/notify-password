@@ -4,6 +4,9 @@
     <!-- Login -->
     <string name="auth_title_keyguard_secure">Password Notify</string>
     <string name="auth_message_keyguard_secure">Desbloquei seu app realizando um login rápido</string>
+    <string name="inform_your_password">Informe sua senha</string>
+    <string name="inform_your_password_confirmation">Confirme a senha</string>
+    <string name="btn_do_login">Login</string>
 
     <!-- Generate Password -->
     <string name="option_numbers">Números</string>

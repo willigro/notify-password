@@ -8,6 +8,9 @@ import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModel
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordViewModel
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordViewModelFactory
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordViewModelImpl
+import com.rittmann.passwordnotify.ui.login.LoginRepositoryImpl
+import com.rittmann.passwordnotify.ui.login.LoginViewModel
+import com.rittmann.passwordnotify.ui.login.LoginViewModelFactory
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordRepositoryImpl
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordViewModel
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordViewModelFactory
@@ -42,11 +45,13 @@ class CustomApplication : Application(), KodeinAware {
 
     private fun Kodein.MainBuilder.bindRepositories() {
         bind() from provider { ManagerPasswordRepositoryImpl(applicationContext) }
+        bind() from provider { LoginRepositoryImpl(applicationContext) }
     }
 
     private fun Kodein.MainBuilder.bindViewModelFactories() {
         bind() from provider { GeneratePasswordViewModelFactory(instance()) }
         bind() from provider { ManagerPasswordViewModelFactory(instance()) }
         bind() from provider { ListPasswordViewModelFactory(instance()) }
+        bind() from provider { LoginViewModelFactory(instance()) }
     }
 }

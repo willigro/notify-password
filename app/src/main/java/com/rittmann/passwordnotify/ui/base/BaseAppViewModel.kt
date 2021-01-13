@@ -14,12 +14,30 @@ open class BaseAppViewModel : BaseViewModel() {
 
     fun executeAsync(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        blockOnMain: Boolean = false,
         scope: CoroutineScope = GlobalScope,
         block: suspend () -> Unit
     ) {
         val s = viewModelScopeGen ?: scope
         s.launch {
             withContext(dispatcher) {
+                if (blockOnMain)
+                    withContext(Dispatchers.Main) {
+                        block()
+                    }
+                else
+                    block()
+            }
+        }
+    }
+
+    fun executeMain(
+        scope: CoroutineScope = GlobalScope,
+        block: suspend () -> Unit
+    ) {
+        val s = viewModelScopeGen ?: scope
+        s.launch {
+            withContext(Dispatchers.Main) {
                 block()
             }
         }
