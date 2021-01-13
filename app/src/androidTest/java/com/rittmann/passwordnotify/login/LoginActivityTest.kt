@@ -5,8 +5,8 @@ import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.support.ActivityTest
 import com.rittmann.passwordnotify.support.ExpressoUtil.viewIsDisplayed
 import com.rittmann.passwordnotify.ui.login.LoginActivity
-import junit.framework.Assert.fail
 import org.junit.After
+import org.junit.Assert.fail
 import org.junit.Test
 
 class LoginActivityTest : ActivityTest() {
