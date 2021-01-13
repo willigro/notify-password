@@ -1,5 +1,6 @@
 package com.rittmann.passwordnotify.ui.generatepassword
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -118,6 +119,9 @@ class GeneratePasswordActivity : BaseAppActivity() {
             getRegisteredManager().observe(this@GeneratePasswordActivity, { manager ->
                 hideProgress()
                 manager?.also {
+                    // to update the list when return
+                    setResult(Activity.RESULT_OK)
+
                     startActivity(
                         ManagerPasswordActivity.getIntentManagerPasswordActivity(
                             this@GeneratePasswordActivity,

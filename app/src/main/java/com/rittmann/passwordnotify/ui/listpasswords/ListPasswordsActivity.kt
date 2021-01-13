@@ -57,7 +57,10 @@ class ListPasswordsActivity : BaseAppActivity() {
 
     private fun initViews() {
         btnNewPassword.setOnClickListener {
-            startActivity(GeneratePasswordActivity.getIntent(this@ListPasswordsActivity))
+            startActivityForResult(
+                GeneratePasswordActivity.getIntent(this@ListPasswordsActivity),
+                OPEN_MANAGER
+            )
         }
     }
 
