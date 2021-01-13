@@ -39,6 +39,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
 
     fun hasLoginRegistered() {
         showProgress()
+
         executeAsync {
             val has = repository.hasLogin()
             executeMain {
@@ -46,13 +47,14 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                     _hasLoginRegistered.call()
                 else
                     _loginNotFound.call()
+
+                hideProgress()
             }
         }
     }
 
     fun doLogin(password: String?, confirmation: String?, withConfirmation: Boolean) {
         showProgress()
-
         var invalid = false
 
         if (password.isNullOrEmpty()) {
@@ -72,7 +74,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                 } else {
                     _passwordDoesNotMatchWithConfirmation.call()
                 }
-            }
+            } else
+                hideProgress()
         } else {
             if (invalid.not())
                 executeAsync {
@@ -83,6 +86,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                             _passwordIsValid.call()
                         } else
                             _passwordIsNotValid.call()
+
+                        hideProgress()
                     }
                 }
         }
@@ -97,6 +102,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                     _passwordRegistered.call()
                 } else
                     _passwordNotRegistered.call()
+
+                hideProgress()
             }
         }
     }

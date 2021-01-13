@@ -9,16 +9,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
+import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordActivity
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
+import com.rittmann.widgets.dialog.DialogUtil
+import com.rittmann.widgets.dialog.dialog
 import kotlinx.android.synthetic.main.activity_list_passwords.btnNewPassword
+import kotlinx.android.synthetic.main.activity_list_passwords.content
 import kotlinx.android.synthetic.main.activity_list_passwords.recyclerPassword
 import org.kodein.di.erased.instance
 
 
 class ListPasswordsActivity : BaseAppActivity() {
 
+    private var modal: DialogUtil? = null
     override var resIdViewReference: Int = R.id.content
 
     private val viewModelFactory: ListPasswordViewModelFactory by instance()
@@ -34,10 +39,13 @@ class ListPasswordsActivity : BaseAppActivity() {
             ListPasswordViewModelImpl::class.java
         )
 
-        viewModel.getAllPasswords()
-
         initViews()
         initObservers()
+
+        viewModel.getAllPasswords()
+        if (canUseKeyguard() && SharedPreferencesModel(this).isUsingKeyguard().not()) {
+            requestToUseKeyguard()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,7 +78,19 @@ class ListPasswordsActivity : BaseAppActivity() {
                         }
                     }
                 }
-                hideProgress()
+            })
+        }
+    }
+
+    private fun requestToUseKeyguard() {
+        content.post {
+            modal = dialog(
+                message = getString(R.string.do_you_wish_use_your_keyguard_secure)
+            )
+
+            modal?.handleShow({
+                SharedPreferencesModel(this).setUsingKeyguard(true)
+                modal?.dismiss()
             })
         }
     }

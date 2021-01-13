@@ -39,4 +39,5 @@
 
     <!-- Lits Passwords -->
     <string name="open_new_password_screen">Gerar nova senha</string>
+    <string name="do_you_wish_use_your_keyguard_secure">Deseja utilizar sua chave de segurança para realizar o próximo login?</string>
 </resources>

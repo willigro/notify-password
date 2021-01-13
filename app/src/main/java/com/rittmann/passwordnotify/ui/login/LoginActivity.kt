@@ -2,12 +2,10 @@ package com.rittmann.passwordnotify.ui.login
 
 import android.app.KeyguardManager
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
 import com.rittmann.passwordnotify.R
-import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordsActivity
@@ -57,42 +55,34 @@ class LoginActivity : BaseAppActivity() {
     private fun initObservers() {
         viewModel.apply {
             hasLoginRegistered.observe(this@LoginActivity, {
-                hideProgress()
             })
 
             loginNotFound.observe(this@LoginActivity, {
                 edtPasswordConfirmation.visible()
                 labelLoginConfirmation.visible()
-                hideProgress()
             })
 
             passwordNotFound.observe(this@LoginActivity, {
                 edtPassword.error = getString(R.string.error_password_not_found)
-                hideProgress()
             })
 
             passwordConfirmationNotFound.observe(this@LoginActivity, {
                 edtPasswordConfirmation.error = getString(R.string.error_confirmation_not_found)
-                hideProgress()
             })
 
             passwordDoesNotMatchWithConfirmation.observe(this@LoginActivity, {
                 edtPasswordConfirmation.error = getString(R.string.error_confirmation_not_match)
-                hideProgress()
             })
 
             passwordRegistered.observe(this@LoginActivity, {
-                hideProgress()
                 openListPasswordScreen()
             })
 
             passwordNotRegistered.observe(this@LoginActivity, {
-                hideProgress()
             })
 
             passwordIsValid.observe(this@LoginActivity, {
                 openListPasswordScreen()
-                hideProgress()
             })
 
             passwordIsNotValid.observe(this@LoginActivity, {
@@ -101,7 +91,6 @@ class LoginActivity : BaseAppActivity() {
                     ok = true,
                     show = true
                 )
-                hideProgress()
             })
 
             observeLoading(this)
@@ -115,7 +104,7 @@ class LoginActivity : BaseAppActivity() {
 
     private fun checkKeyguard() {
         if (SharedPreferencesModel(this).isUsingKeyguard()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (canUseKeyguard()) {
                 val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
                 if (km.isKeyguardSecure) {
                     val authIntent = km.createConfirmDeviceCredentialIntent(
@@ -132,12 +121,9 @@ class LoginActivity : BaseAppActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == OPEN_AUTH) {
             if (resultCode == RESULT_OK) {
-                toast("OK")
-            } else {
-                toast("No")
+                openListPasswordScreen()
             }
-        } else
-            toast("ONo")
+        }
     }
 
     companion object {

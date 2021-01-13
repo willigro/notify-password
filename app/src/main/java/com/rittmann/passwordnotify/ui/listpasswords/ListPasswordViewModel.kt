@@ -40,6 +40,8 @@ class ListPasswordViewModelImpl(private val repository: ManagerPasswordRepositor
             }
 
             _passwords.value = all
+
+            hideProgress()
         }
     }
 }
