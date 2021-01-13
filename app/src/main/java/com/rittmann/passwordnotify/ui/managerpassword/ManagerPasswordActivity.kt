@@ -20,11 +20,13 @@ import com.rittmann.widgets.extensions.gone
 import com.rittmann.widgets.extensions.visible
 import java.util.*
 import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
+import kotlinx.android.synthetic.main.activity_manager_password.btnGeneratePassword
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationDescription
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationsNotFound
+import kotlinx.android.synthetic.main.activity_manager_password.txtGeneratedPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers
@@ -72,6 +74,10 @@ class ManagerPasswordActivity : BaseAppActivity() {
     }
 
     private fun initViews() {
+        btnGeneratePassword.setOnClickListener {
+            viewModel.generatePassword(generateManagerPermission())
+        }
+
         btnUpdaterManager.setOnClickListener {
             val manager = generateManagerPermission()
             viewModel.updateManager(manager)
@@ -112,9 +118,18 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
     private fun initObservers() {
         viewModel.apply {
+            getGeneratedPassword().observe(this@ManagerPasswordActivity, {
+                generateManagerPermission().also { manager ->
+                    manager.password = it
+                    viewModel.updateManager(manager)
+                }
+            })
+
             getManagerPasswordData().observe(this@ManagerPasswordActivity, {
                 it?.also {
                     managerPassword = it
+
+                    txtGeneratedPassword.text = it.password
 
                     edtName.setText(it.name)
                     edtLength.setText(it.length)
@@ -225,7 +240,8 @@ class ManagerPasswordActivity : BaseAppActivity() {
             Pair(checkUpperCase.isChecked, checkRequiredUpperCase.isChecked),
             Pair(checkLowerCase.isChecked, checkRequiredLowerCase.isChecked),
             Pair(checkAccent.isChecked, checkRequiredAccent.isChecked),
-            Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked)
+            Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked),
+            password = txtGeneratedPassword.text.toString()
         )
     }
 

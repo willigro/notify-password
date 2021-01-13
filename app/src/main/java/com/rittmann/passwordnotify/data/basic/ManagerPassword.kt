@@ -35,7 +35,10 @@ data class ManagerPassword(
     val special: Pair<Boolean, Boolean>,
 
     @ColumnInfo(name = TableManagerPassword.EACH_DAYS_TO_NOTIFY)
-    var eachDaysToNotify: Int = 0
+    var eachDaysToNotify: Int = 0,
+
+    @ColumnInfo(name = TableManagerPassword.PASSWORD)
+    var password: String = ""
 ) : Serializable {
 
     @ColumnInfo(name = TableManagerPassword.NOTIFY_DATE_FROM)

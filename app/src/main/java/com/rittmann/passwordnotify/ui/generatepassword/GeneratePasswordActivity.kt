@@ -99,7 +99,8 @@ class GeneratePasswordActivity : BaseAppActivity() {
             Pair(checkUpperCase.isChecked, checkRequiredUpperCase.isChecked),
             Pair(checkLowerCase.isChecked, checkRequiredLowerCase.isChecked),
             Pair(checkAccent.isChecked, checkRequiredAccent.isChecked),
-            Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked)
+            Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked),
+            password = txtPassword.text.toString()
         )
     }
 
@@ -128,6 +129,8 @@ class GeneratePasswordActivity : BaseAppActivity() {
                             manager
                         )
                     )
+
+                    finish()
                 }
             })
 

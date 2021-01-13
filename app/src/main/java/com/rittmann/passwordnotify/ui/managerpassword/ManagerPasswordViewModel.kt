@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.rittmann.androidtools.dateutil.DateUtilImpl
 import com.rittmann.baselifecycle.livedata.SingleLiveEvent
+import com.rittmann.passwordnotify.data.Constants
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.extensions.isPositiveNumber
+import com.rittmann.passwordnotify.data.extensions.parseToInt
+import com.rittmann.passwordnotify.generate.GenerateRandomPassword
 import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordViewModelImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /***
@@ -28,6 +33,8 @@ interface ManagerPasswordViewModel {
     fun deleteResult(): LiveData<Boolean>
     fun cancelNotification(): LiveData<Boolean>
     fun isUpdated(): LiveData<Boolean>
+    fun generatePassword(randomPermissions: ManagerPassword)
+    fun getGeneratedPassword(): LiveData<String>
 
     // Functions
     fun updateManager(managerPassword: ManagerPassword)
@@ -76,6 +83,7 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     override fun isUpdated(): LiveData<Boolean> = _isUpdated
 
     override fun updateManager(managerPassword: ManagerPassword) {
+        showProgress()
         if (isValidFields(managerPassword)) {
             executeAsync {
                 managerPassword.apply {
@@ -95,6 +103,8 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
                         } else {
                             _updateInvalid.call()
                         }
+
+                        hideProgress()
                     }
                 }
             }
@@ -163,5 +173,23 @@ class ManagerPasswordViewModelImpl(private val repository: ManagerPasswordReposi
     }
 
     override fun generatePassword(randomPermissions: ManagerPassword) {
+        randomPermissions.length.parseToInt({ length ->
+            if (length <= 0 || length > Constants.MAX_PASSWORD_LENGTH)
+                invalidLength.call()
+            else {
+                viewModelScope.launch {
+                    withContext(Dispatchers.Default) {
+                        password.postValue(
+                            GenerateRandomPassword.randomPassword(
+                                length,
+                                randomPermissions
+                            )
+                        )
+                    }
+                }
+            }
+        }) {
+            invalidLength.call()
+        }
     }
 }
