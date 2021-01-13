@@ -13,9 +13,10 @@ import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.widgets.extensions.visible
 import kotlinx.android.synthetic.main.activity_login.edtPasswordConfirmation
 import kotlinx.android.synthetic.main.activity_login.labelLoginConfirmation
+import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
 
-class LoginActivity : BaseAppActivity() {
+class LoginActivity : BaseAppActivity(){
 
     override var resIdViewReference: Int = R.id.content
 
