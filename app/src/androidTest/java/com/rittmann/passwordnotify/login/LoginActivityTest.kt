@@ -2,7 +2,10 @@ package com.rittmann.passwordnotify.login
 
 import androidx.test.core.app.ActivityScenario
 import com.rittmann.passwordnotify.R
+import com.rittmann.passwordnotify.data.dao.room.config.AppDatabase
 import com.rittmann.passwordnotify.support.ActivityTest
+import com.rittmann.passwordnotify.support.ExpressoUtil.checkValueError
+import com.rittmann.passwordnotify.support.ExpressoUtil.performClick
 import com.rittmann.passwordnotify.support.ExpressoUtil.viewIsDisplayed
 import com.rittmann.passwordnotify.ui.login.LoginActivity
 import org.junit.After
@@ -34,5 +37,27 @@ class LoginActivityTest : ActivityTest() {
 
         viewIsDisplayed(R.id.edtPasswordConfirmation)
         viewIsDisplayed(R.id.labelLoginConfirmation)
+    }
+
+    @Test
+    fun showPasswordErrorWhenItIsNotInformed() {
+        deleteAllLogin()
+
+        scenario = ActivityScenario.launch(LoginActivity::class.java)
+
+        viewIsDisplayed(R.id.edtPasswordConfirmation)
+        viewIsDisplayed(R.id.labelLoginConfirmation)
+
+        performClick(R.id.btnDoLogin)
+
+        checkValueError(R.id.edtPassword, context.getString(R.string.error_password_not_found))
+        checkValueError(
+            R.id.edtPasswordConfirmation,
+            context.getString(R.string.error_confirmation_not_found)
+        )
+    }
+
+    private fun deleteAllLogin() {
+        AppDatabase.getDatabase(context)?.loginDao()?.deleteAll()
     }
 }

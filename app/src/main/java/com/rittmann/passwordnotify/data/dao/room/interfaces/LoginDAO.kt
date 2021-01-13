@@ -20,4 +20,7 @@ interface LoginDAO {
 
     @RawQuery(observedEntities = [ManagerPassword::class])
     fun get(query: SupportSQLiteQuery): List<Login>
+
+    @Query("DELETE FROM ${TableLogin.TABLE}")
+    fun deleteAll()
 }

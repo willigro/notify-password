@@ -70,7 +70,7 @@ class LoginActivity : BaseAppActivity() {
             })
 
             passwordConfirmationNotFound.observe(this@LoginActivity, {
-                edtPassword.error = getString(R.string.error_confirmation_not_found)
+                edtPasswordConfirmation.error = getString(R.string.error_confirmation_not_found)
                 hideProgress()
             })
 
