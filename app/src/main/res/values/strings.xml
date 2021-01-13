@@ -9,6 +9,7 @@
     <string name="btn_do_login">Login</string>
     <string name="error_password_not_found">Informe a senha</string>
     <string name="error_confirmation_not_found">Informa a confirmação da senha</string>
+    <string name="error_confirmation_not_match">A confirmação da senha não está igual a senha</string>
 
     <!-- Generate Password -->
     <string name="option_numbers">Números</string>

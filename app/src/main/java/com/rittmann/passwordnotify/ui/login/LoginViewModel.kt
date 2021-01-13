@@ -21,7 +21,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
     private val _loginNotFound: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _passwordNotFound: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _passwordConfirmationNotFound: SingleLiveEvent<Void> = SingleLiveEvent()
-    private val _passwordDontMatchWithConfirmation: SingleLiveEvent<Void> = SingleLiveEvent()
+    private val _passwordDoesNotMatchWithConfirmation: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _passwordRegistered: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _passwordNotRegistered: SingleLiveEvent<Void> = SingleLiveEvent()
     private val _passwordIsValid: SingleLiveEvent<Void> = SingleLiveEvent()
@@ -31,7 +31,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
     val loginNotFound: LiveData<Void> = _loginNotFound
     val passwordNotFound: LiveData<Void> = _passwordNotFound
     val passwordConfirmationNotFound: LiveData<Void> = _passwordConfirmationNotFound
-    val passwordDontMatchWithConfirmation: LiveData<Void> = _passwordDontMatchWithConfirmation
+    val passwordDoesNotMatchWithConfirmation: LiveData<Void> = _passwordDoesNotMatchWithConfirmation
     val passwordRegistered: LiveData<Void> = _passwordRegistered
     val passwordNotRegistered: LiveData<Void> = _passwordNotRegistered
     val passwordIsValid: LiveData<Void> = _passwordIsValid
@@ -68,7 +68,7 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                 if (password == confirmation) {
                     registerPassword(password!!)
                 } else {
-                    _passwordDontMatchWithConfirmation.call()
+                    _passwordDoesNotMatchWithConfirmation.call()
                 }
             }
         } else {

@@ -6,6 +6,7 @@ import com.rittmann.passwordnotify.data.dao.room.config.AppDatabase
 import com.rittmann.passwordnotify.support.ActivityTest
 import com.rittmann.passwordnotify.support.ExpressoUtil.checkValueError
 import com.rittmann.passwordnotify.support.ExpressoUtil.performClick
+import com.rittmann.passwordnotify.support.ExpressoUtil.putValue
 import com.rittmann.passwordnotify.support.ExpressoUtil.viewIsDisplayed
 import com.rittmann.passwordnotify.ui.login.LoginActivity
 import org.junit.After
@@ -54,6 +55,26 @@ class LoginActivityTest : ActivityTest() {
         checkValueError(
             R.id.edtPasswordConfirmation,
             context.getString(R.string.error_confirmation_not_found)
+        )
+    }
+
+    @Test
+    fun showDoesNotMatchWhenConfirmationAndPasswordNotAreTheSame() {
+        deleteAllLogin()
+
+        scenario = ActivityScenario.launch(LoginActivity::class.java)
+
+        viewIsDisplayed(R.id.edtPasswordConfirmation)
+        viewIsDisplayed(R.id.labelLoginConfirmation)
+
+        putValue(R.id.edtPassword, "Password")
+        putValue(R.id.edtPasswordConfirmation, "Confirmation")
+
+        performClick(R.id.btnDoLogin)
+
+        checkValueError(
+            R.id.edtPasswordConfirmation,
+            context.getString(R.string.error_confirmation_not_match)
         )
     }
 

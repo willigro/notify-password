@@ -74,7 +74,8 @@ class LoginActivity : BaseAppActivity() {
                 hideProgress()
             })
 
-            passwordDontMatchWithConfirmation.observe(this@LoginActivity, {
+            passwordDoesNotMatchWithConfirmation.observe(this@LoginActivity, {
+                edtPasswordConfirmation.error = getString(R.string.error_confirmation_not_match)
                 hideProgress()
             })
 
