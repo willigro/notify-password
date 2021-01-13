@@ -26,7 +26,7 @@ class LoginRepositoryImpl(context: Context) : LoginRepository {
     }
 
     override fun checkPassword(password: String): Boolean {
-        val query = TableLogin.TABLE.selectAll("${TableLogin.PASSWORD} = $password")
+        val query = TableLogin.TABLE.selectAll("${TableLogin.PASSWORD} = '$password'")
         return dao?.get(query.toDao()).isNullOrEmpty().not()
     }
 }

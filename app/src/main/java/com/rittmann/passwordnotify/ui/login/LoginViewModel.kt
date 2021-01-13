@@ -51,6 +51,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
     }
 
     fun doLogin(password: String?, confirmation: String?, withConfirmation: Boolean) {
+        showProgress()
+
         var invalid = false
 
         if (password.isNullOrEmpty()) {

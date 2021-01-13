@@ -10,6 +10,7 @@ import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.passwordnotify.ui.listpasswords.ListPasswordsActivity
 import com.rittmann.widgets.extensions.isVisible
 import com.rittmann.widgets.extensions.visible
 import kotlinx.android.synthetic.main.activity_login.btnDoLogin
@@ -81,6 +82,7 @@ class LoginActivity : BaseAppActivity() {
 
             passwordRegistered.observe(this@LoginActivity, {
                 hideProgress()
+                openListPasswordScreen()
             })
 
             passwordNotRegistered.observe(this@LoginActivity, {
@@ -88,6 +90,7 @@ class LoginActivity : BaseAppActivity() {
             })
 
             passwordIsValid.observe(this@LoginActivity, {
+                openListPasswordScreen()
                 hideProgress()
             })
 
@@ -98,6 +101,11 @@ class LoginActivity : BaseAppActivity() {
 
             observeLoading(this)
         }
+    }
+
+    private fun openListPasswordScreen() {
+        startActivity(ListPasswordsActivity.getIntent(this@LoginActivity))
+        finish()
     }
 
     private fun checkKeyguard() {

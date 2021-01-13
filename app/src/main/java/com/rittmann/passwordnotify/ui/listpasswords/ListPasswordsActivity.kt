@@ -1,6 +1,7 @@
 package com.rittmann.passwordnotify.ui.listpasswords
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
@@ -76,5 +77,7 @@ class ListPasswordsActivity : BaseAppActivity() {
 
     companion object {
         const val OPEN_MANAGER = 1
+
+        fun getIntent(context: Context) = Intent(context, ListPasswordsActivity::class.java)
     }
 }
