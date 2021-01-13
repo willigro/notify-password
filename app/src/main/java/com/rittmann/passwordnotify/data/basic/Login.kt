@@ -14,5 +14,5 @@ data class Login(
     var id: Long = 0L,
 
     @ColumnInfo(name = TableLogin.PASSWORD)
-    var name: String = ""
+    var password: String = ""
 ) : Serializable

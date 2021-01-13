@@ -10,13 +10,15 @@ import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
+import com.rittmann.widgets.extensions.isVisible
 import com.rittmann.widgets.extensions.visible
+import kotlinx.android.synthetic.main.activity_login.btnDoLogin
+import kotlinx.android.synthetic.main.activity_login.edtPassword
 import kotlinx.android.synthetic.main.activity_login.edtPasswordConfirmation
 import kotlinx.android.synthetic.main.activity_login.labelLoginConfirmation
-import org.kodein.di.KodeinAware
 import org.kodein.di.erased.instance
 
-class LoginActivity : BaseAppActivity(){
+class LoginActivity : BaseAppActivity() {
 
     override var resIdViewReference: Int = R.id.content
 
@@ -33,10 +35,21 @@ class LoginActivity : BaseAppActivity(){
             LoginViewModel::class.java
         )
 
+        initViews()
         initObservers()
         checkKeyguard()
 
         viewModel.hasLoginRegistered()
+    }
+
+    private fun initViews() {
+        btnDoLogin.setOnClickListener {
+            viewModel.doLogin(
+                edtPassword.text.toString(),
+                edtPasswordConfirmation.text.toString(),
+                edtPasswordConfirmation.isVisible()
+            )
+        }
     }
 
     private fun initObservers() {
@@ -50,6 +63,37 @@ class LoginActivity : BaseAppActivity(){
                 labelLoginConfirmation.visible()
                 hideProgress()
             })
+
+            passwordNotFound.observe(this@LoginActivity, {
+                edtPassword.error = getString(R.string.error_password_not_found)
+                hideProgress()
+            })
+
+            passwordConfirmationNotFound.observe(this@LoginActivity, {
+                edtPassword.error = getString(R.string.error_confirmation_not_found)
+                hideProgress()
+            })
+
+            passwordDontMatchWithConfirmation.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
+            passwordRegistered.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
+            passwordNotRegistered.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
+            passwordIsValid.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
+            passwordIsNotValid.observe(this@LoginActivity, {
+                hideProgress()
+            })
+
 
             observeLoading(this)
         }
