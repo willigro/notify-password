@@ -7,20 +7,27 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.extensions.toast
+import com.rittmann.passwordnotify.data.preferences.SharedPreferencesModel
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-            if (km.isKeyguardSecure) {
-                val authIntent = km.createConfirmDeviceCredentialIntent(
-                    getString(R.string.auth_title_keyguard_secure),
-                    getString(R.string.auth_message_keyguard_secure)
-                )
-                startActivityForResult(authIntent, OPEN_AUTH)
+        checkKeyguard()
+    }
+
+    private fun checkKeyguard() {
+        if (SharedPreferencesModel(this).isUsingKeyguard()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+                if (km.isKeyguardSecure) {
+                    val authIntent = km.createConfirmDeviceCredentialIntent(
+                        getString(R.string.auth_title_keyguard_secure),
+                        getString(R.string.auth_message_keyguard_secure)
+                    )
+                    startActivityForResult(authIntent, OPEN_AUTH)
+                }
             }
         }
     }
