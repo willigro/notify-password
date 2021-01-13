@@ -84,14 +84,16 @@ class ListPasswordsActivity : BaseAppActivity() {
 
     private fun requestToUseKeyguard() {
         content.post {
-            modal = dialog(
+            dialog(
                 message = getString(R.string.do_you_wish_use_your_keyguard_secure)
-            )
+            ).apply {
+                modal = this
 
-            modal?.handleShow({
-                SharedPreferencesModel(this).setUsingKeyguard(true)
-                modal?.dismiss()
-            })
+                handleShow({
+                    SharedPreferencesModel(this@ListPasswordsActivity).setUsingKeyguard(true)
+                    dismiss()
+                })
+            }
         }
     }
 
