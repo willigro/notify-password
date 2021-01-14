@@ -16,6 +16,7 @@ import com.rittmann.widgets.dialog.DialogUtil
 import com.rittmann.widgets.dialog.dialog
 import kotlinx.android.synthetic.main.activity_generate_password.btnGeneratePassword
 import kotlinx.android.synthetic.main.activity_generate_password.btnRegister
+import kotlinx.android.synthetic.main.activity_generate_password.txtPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.password_permissions.checkRequiredUpperCas
 import kotlinx.android.synthetic.main.password_permissions.checkSpecial
 import kotlinx.android.synthetic.main.password_permissions.checkUpperCase
 import kotlinx.android.synthetic.main.password_permissions.edtLength
-import kotlinx.android.synthetic.main.password_permissions.txtPassword
 import org.kodein.di.erased.instance
 
 class GeneratePasswordActivity : BaseAppActivity() {

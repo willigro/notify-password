@@ -39,6 +39,9 @@
     <string name="dialog_message_confirmation_to_update">Deseja atualizar a sua senha?</string>
     <string name="dialog_message_confirmation_to_delete">Deseja deletar essa senha permanentemente?</string>
     <string name="password_updated">Atualizado</string>
+    <string name="generated_password">Senha gerada</string>
+    <string name="password_length">Quantidade de caracteres na senha</string>
+    <string name="password_name">Identificador da senha</string>
 
     <!-- Lits Passwords -->
     <string name="open_new_password_screen">Gerar nova senha</string>
