@@ -24,6 +24,7 @@
     <string name="message_invalid_length">Informe um tamanho válido de 1 a 1000!</string>
     <string name="message_invalid_amout">Informe um período válido</string>
     <string name="message_error_generate_the_password">É necessário gerar a senha para prosseguir</string>
+    <string name="inform_a_identify_name">Informe um nome de identificação</string>
 
     <!-- Manager Password -->
     <string name="for_security_enable_notifications">Por segurança, habilite as notificações de mudança da senha a cada: %s TEMPOS</string>
@@ -31,7 +32,7 @@
     <string name="new_notification">Notificação</string>
     <string name="update_password">Manter alterações</string>
     <string name="remove_password">Deletar senha</string>
-    <string name="schedule_a_notification_for_each">Agende uma notificação de atualização do valor para cada %s dias (informando 0, não haverá notificações)</string>
+    <string name="schedule_a_notification_for_each">Agende uma notificação de atualização da senha à cada %s dias (caso 0, não haverá notificações)</string>
     <string name="notification_title_change_your_password">Atualize a sua senha</string>
     <string name="notification_message_change_your_password">Ao atualizar a sua senha você mantem suas contas associadas seguras, gere uma nova e a utilize.</string>
     <string name="notification_not_found">Não há uma notificação de atualização agendada.</string>

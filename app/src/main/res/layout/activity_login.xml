@@ -5,13 +5,13 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/layout_padding"
     tools:context=".ui.login.LoginActivity">
 
     <TextView
         android:id="@+id/labelLogin"
-        style="@style/TextView"
+        style="@style/TextViewLabelToInput"
         android:text="@string/inform_your_password"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,13 +24,12 @@
 
     <TextView
         android:id="@+id/labelLoginConfirmation"
-        style="@style/TextView"
+        style="@style/TextViewLabelToInput"
         android:text="@string/inform_your_password_confirmation"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPassword"
-        tools:visibility="invisible" />
+        tools:visibility="visible" />
 
     <EditText
         android:id="@+id/edtPasswordConfirmation"
@@ -43,7 +42,7 @@
 
     <Button
         android:id="@+id/btnDoLogin"
-        style="@style/Button"
+        style="@style/ButtonConfirm"
         android:text="@string/btn_do_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,7 @@
 
     <!-- Background -->
     <color name="backgroundLight">#EAEBEC</color>
+    <color name="backgroundDivisor">#3A3A3A</color>
 
     <!-- Button -->
     <color name="buttonBackgroundLight">#0672E4</color>

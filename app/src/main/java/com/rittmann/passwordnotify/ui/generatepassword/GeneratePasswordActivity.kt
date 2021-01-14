@@ -64,8 +64,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
                 return@setOnClickListener
             }
             modal = dialog(
-                "title",
-                "message",
+                message = getString(R.string.inform_a_identify_name),
                 cancelable = true,
                 resId = R.layout.dialog_with_input
             )

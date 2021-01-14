@@ -90,6 +90,8 @@ class LoginViewModel(private val repository: LoginRepository) : BaseAppViewModel
                         hideProgress()
                     }
                 }
+            else
+                hideProgress()
         }
     }
 

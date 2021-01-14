@@ -98,14 +98,13 @@ class ManagerPasswordActivity : BaseAppActivity() {
         btnScheduleNotification.setOnClickListener {
             modal?.dismiss()
             dialog(
-                message = "message",
+                message = getString(R.string.schedule_a_notification_for_each).format(0),
                 cancelable = true,
                 resId = R.layout.dialog_with_input
             ).apply {
                 modal = this
                 dialogView.apply {
                     val label = findViewById<TextView>(R.id.dialogSubtitleTextView)
-                    label.text = getString(R.string.schedule_a_notification_for_each).format(0)
 
                     findViewById<EditText>(R.id.edt_dialog).watcherAfter {
                         label.text = getString(R.string.schedule_a_notification_for_each).format(

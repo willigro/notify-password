@@ -88,7 +88,8 @@ class ListPasswordsActivity : BaseAppActivity() {
     private fun requestToUseKeyguard() {
         content.post {
             dialog(
-                message = getString(R.string.do_you_wish_use_your_keyguard_secure)
+                message = getString(R.string.do_you_wish_use_your_keyguard_secure),
+                resId = R.layout.dialog_confirm_cancel
             ).apply {
                 modal = this
 
