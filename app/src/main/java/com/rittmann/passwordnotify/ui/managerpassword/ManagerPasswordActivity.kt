@@ -21,13 +21,13 @@ import com.rittmann.widgets.extensions.gone
 import com.rittmann.widgets.extensions.visible
 import java.util.*
 import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
-import kotlinx.android.synthetic.main.activity_manager_password.btnGeneratePassword
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
-import kotlinx.android.synthetic.main.activity_manager_password.edtGeneratedPassword
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationDescription
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationsNotFound
+import kotlinx.android.synthetic.main.generate_password_input.btnGeneratePassword
+import kotlinx.android.synthetic.main.generate_password_input.edtGeneratedPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers

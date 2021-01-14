@@ -14,9 +14,9 @@ import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.passwordnotify.ui.managerpassword.ManagerPasswordActivity
 import com.rittmann.widgets.dialog.DialogUtil
 import com.rittmann.widgets.dialog.dialog
-import kotlinx.android.synthetic.main.activity_generate_password.btnGeneratePassword
 import kotlinx.android.synthetic.main.activity_generate_password.btnRegister
-import kotlinx.android.synthetic.main.activity_generate_password.txtPassword
+import kotlinx.android.synthetic.main.generate_password_input.btnGeneratePassword
+import kotlinx.android.synthetic.main.generate_password_input.edtGeneratedPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers
@@ -59,7 +59,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
         }
 
         btnRegister.setOnClickListener {
-            if (txtPassword.text.isNullOrEmpty()) {
+            if (edtGeneratedPassword.text.isNullOrEmpty()) {
                 toast(R.string.message_error_generate_the_password)
                 return@setOnClickListener
             }
@@ -100,7 +100,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
             Pair(checkLowerCase.isChecked, checkRequiredLowerCase.isChecked),
             Pair(checkAccent.isChecked, checkRequiredAccent.isChecked),
             Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked),
-            password = txtPassword.text.toString()
+            password = edtGeneratedPassword.text.toString()
         )
     }
 
@@ -113,7 +113,7 @@ class GeneratePasswordActivity : BaseAppActivity() {
             })
 
             getGeneratedPassword().observe(this@GeneratePasswordActivity, {
-                txtPassword.text = it
+                edtGeneratedPassword.setText(it)
                 hideProgress()
             })
 
