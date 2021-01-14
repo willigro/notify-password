@@ -10,6 +10,7 @@
     <!-- Button -->
     <color name="buttonBackgroundLight">#0672E4</color>
     <color name="buttonBackgroundSecondaryLight">#E46606</color>
+    <color name="buttonBackgroundThirdLight">#06E49E</color>
 
     <!-- Text -->
     <color name="textLight">#EAEBEC</color>
