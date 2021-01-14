@@ -124,7 +124,17 @@ class ManagerPasswordActivity : BaseAppActivity() {
         }
 
         btnDelete.setOnClickListener {
-            viewModel.deleteManager()
+            modal?.dismiss()
+            dialog(
+                message = getString(R.string.dialog_message_confirmation_to_delete)
+            ).apply {
+                modal = this
+                handleShow({
+                    viewModel.deleteManager()
+
+                    dismiss()
+                })
+            }
         }
     }
 

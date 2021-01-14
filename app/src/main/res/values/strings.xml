@@ -37,6 +37,7 @@
     <string name="notification_not_found">Não há uma notificação de atualização agendada.</string>
     <string name="notification_description">Notificação criada em %s, agendada para %s.</string>
     <string name="dialog_message_confirmation_to_update">Deseja atualizar a sua senha?</string>
+    <string name="dialog_message_confirmation_to_delete">Deseja deletar essa senha permanentemente?</string>
     <string name="password_updated">Atualizado</string>
 
     <!-- Lits Passwords -->
