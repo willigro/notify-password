@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.activity_manager_password.btnDelete
 import kotlinx.android.synthetic.main.activity_manager_password.btnGeneratePassword
 import kotlinx.android.synthetic.main.activity_manager_password.btnScheduleNotification
 import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManager
+import kotlinx.android.synthetic.main.activity_manager_password.edtGeneratedPassword
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationDescription
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationsNotFound
-import kotlinx.android.synthetic.main.activity_manager_password.txtGeneratedPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
 import kotlinx.android.synthetic.main.password_permissions.checkLowerCase
 import kotlinx.android.synthetic.main.password_permissions.checkNumbers
@@ -119,17 +119,14 @@ class ManagerPasswordActivity : BaseAppActivity() {
     private fun initObservers() {
         viewModel.apply {
             getGeneratedPassword().observe(this@ManagerPasswordActivity, {
-                generateManagerPermission().also { manager ->
-                    manager.password = it
-                    viewModel.updateManager(manager)
-                }
+                edtGeneratedPassword.setText(it)
             })
 
             getManagerPasswordData().observe(this@ManagerPasswordActivity, {
                 it?.also {
                     managerPassword = it
 
-                    txtGeneratedPassword.text = it.password
+                    edtGeneratedPassword.setText(it.password)
 
                     edtName.setText(it.name)
                     edtLength.setText(it.length)
@@ -241,7 +238,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
             Pair(checkLowerCase.isChecked, checkRequiredLowerCase.isChecked),
             Pair(checkAccent.isChecked, checkRequiredAccent.isChecked),
             Pair(checkSpecial.isChecked, checkRequiredSpecial.isChecked),
-            password = txtGeneratedPassword.text.toString()
+            password = edtGeneratedPassword.text.toString()
         )
     }
 
