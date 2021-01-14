@@ -82,7 +82,8 @@ class ManagerPasswordActivity : BaseAppActivity() {
         btnUpdaterManager.setOnClickListener {
             modal?.dismiss()
             dialog(
-                message = getString(R.string.dialog_message_confirmation_to_update)
+                message = getString(R.string.dialog_message_confirmation_to_update),
+                resId = R.layout.dialog_confirm_cancel
             ).apply {
                 modal = this
                 handleShow({
@@ -99,7 +100,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
             dialog(
                 message = "message",
                 cancelable = true,
-                resId = R.layout.schedule_notification
+                resId = R.layout.dialog_schedule_notification
             ).apply {
                 modal = this
                 dialogView.apply {
@@ -126,7 +127,8 @@ class ManagerPasswordActivity : BaseAppActivity() {
         btnDelete.setOnClickListener {
             modal?.dismiss()
             dialog(
-                message = getString(R.string.dialog_message_confirmation_to_delete)
+                message = getString(R.string.dialog_message_confirmation_to_delete),
+                resId = R.layout.dialog_confirm_cancel
             ).apply {
                 modal = this
                 handleShow({
