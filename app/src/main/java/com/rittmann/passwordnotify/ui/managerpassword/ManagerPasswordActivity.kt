@@ -100,14 +100,14 @@ class ManagerPasswordActivity : BaseAppActivity() {
             dialog(
                 message = "message",
                 cancelable = true,
-                resId = R.layout.dialog_schedule_notification
+                resId = R.layout.dialog_with_input
             ).apply {
                 modal = this
                 dialogView.apply {
-                    val label = findViewById<TextView>(R.id.txtScheduleNotification)
+                    val label = findViewById<TextView>(R.id.dialogSubtitleTextView)
                     label.text = getString(R.string.schedule_a_notification_for_each).format(0)
 
-                    findViewById<EditText>(R.id.edtEachDays).watcherAfter {
+                    findViewById<EditText>(R.id.edt_dialog).watcherAfter {
                         label.text = getString(R.string.schedule_a_notification_for_each).format(
                             it.toString().toIntOrZero()
                         )
@@ -116,7 +116,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
                 handleShow({
                     val days =
-                        modal!!.dialogView.findViewById<EditText>(R.id.edtEachDays).text.toString()
+                        modal!!.dialogView.findViewById<EditText>(R.id.edt_dialog).text.toString()
                             .toIntOrZero()
 
                     viewModel.scheduleNotification(days)
