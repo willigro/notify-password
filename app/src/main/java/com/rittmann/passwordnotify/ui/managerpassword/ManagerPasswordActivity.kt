@@ -12,6 +12,7 @@ import com.rittmann.androidtools.dateutil.DateUtilImpl
 import com.rittmann.passwordnotify.R
 import com.rittmann.passwordnotify.data.basic.ManagerPassword
 import com.rittmann.passwordnotify.data.extensions.toIntOrZero
+import com.rittmann.passwordnotify.data.extensions.toast
 import com.rittmann.passwordnotify.data.extensions.watcherAfter
 import com.rittmann.passwordnotify.ui.base.BaseAppActivity
 import com.rittmann.widgets.dialog.DialogUtil
@@ -79,18 +80,29 @@ class ManagerPasswordActivity : BaseAppActivity() {
         }
 
         btnUpdaterManager.setOnClickListener {
-            val manager = generateManagerPermission()
-            viewModel.updateManager(manager)
+            modal?.dismiss()
+            dialog(
+                message = getString(R.string.dialog_message_confirmation_to_update)
+            ).apply {
+                modal = this
+                handleShow({
+                    val manager = generateManagerPermission()
+                    viewModel.updateManager(manager)
+
+                    dismiss()
+                })
+            }
         }
 
         btnScheduleNotification.setOnClickListener {
-            modal = dialog(
-                "title",
-                "message",
+            modal?.dismiss()
+            dialog(
+                message = "message",
                 cancelable = true,
                 resId = R.layout.schedule_notification
-            ).also { m ->
-                m.dialogView.apply {
+            ).apply {
+                modal = this
+                dialogView.apply {
                     val label = findViewById<TextView>(R.id.txtScheduleNotification)
                     label.text = getString(R.string.schedule_a_notification_for_each).format(0)
 
@@ -100,15 +112,15 @@ class ManagerPasswordActivity : BaseAppActivity() {
                         )
                     }
                 }
+
+                handleShow({
+                    val days =
+                        modal!!.dialogView.findViewById<EditText>(R.id.edtEachDays).text.toString()
+                            .toIntOrZero()
+
+                    viewModel.scheduleNotification(days)
+                })
             }
-
-            modal?.handleShow({
-                val days =
-                    modal!!.dialogView.findViewById<EditText>(R.id.edtEachDays).text.toString()
-                        .toIntOrZero()
-
-                viewModel.scheduleNotification(days)
-            })
         }
 
         btnDelete.setOnClickListener {
@@ -224,6 +236,7 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
             isUpdated().observe(this@ManagerPasswordActivity, {
                 isUpdated = true
+                toast(R.string.password_updated)
             })
         }
     }
