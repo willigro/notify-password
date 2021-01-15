@@ -19,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -59,4 +59,5 @@ dependencies {
 
     // Others
     implementation 'com.github.willigro:RobbieAndroidUtil:alpha-1.2.3.2'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 }
