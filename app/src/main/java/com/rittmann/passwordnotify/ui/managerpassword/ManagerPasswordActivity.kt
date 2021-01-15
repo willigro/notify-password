@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.rittmann.androidtools.dateutil.DateUtilImpl
 import com.rittmann.passwordnotify.R
@@ -75,6 +77,8 @@ class ManagerPasswordActivity : BaseAppActivity() {
     }
 
     private fun initViews() {
+        addBackButton()
+
         btnGeneratePassword.setOnClickListener {
             viewModel.generatePassword(generateManagerPermission())
         }
@@ -235,6 +239,10 @@ class ManagerPasswordActivity : BaseAppActivity() {
             deleteResult().observe(this@ManagerPasswordActivity, {
                 hideProgress()
                 if (it!!) {
+                    WorkManagerNotify().cancel(
+                        this@ManagerPasswordActivity,
+                        managerPassword?.id ?: 0L
+                    )
                     setResult(Activity.RESULT_OK)
                     finish()
                 }

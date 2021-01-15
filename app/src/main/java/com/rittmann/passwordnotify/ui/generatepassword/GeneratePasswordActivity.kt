@@ -53,6 +53,8 @@ class GeneratePasswordActivity : BaseAppActivity() {
     }
 
     private fun initView() {
+        addBackButton()
+
         btnGeneratePassword.setOnClickListener {
             showProgress()
             viewModel.generatePassword(generateManagerPermission())
