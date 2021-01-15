@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
@@ -110,10 +111,14 @@ class ManagerPasswordActivity : BaseAppActivity() {
                 dialogView.apply {
                     val label = findViewById<TextView>(R.id.dialogSubtitleTextView)
 
-                    findViewById<EditText>(R.id.edt_dialog).watcherAfter {
-                        label.text = getString(R.string.schedule_a_notification_for_each).format(
-                            it.toString().toIntOrZero()
-                        )
+                    findViewById<EditText>(R.id.edt_dialog)?.also { edit ->
+                        edit.inputType = InputType.TYPE_CLASS_NUMBER
+                        edit.watcherAfter {
+                            label.text =
+                                getString(R.string.schedule_a_notification_for_each).format(
+                                    it.toString().toIntOrZero()
+                                )
+                        }
                     }
                 }
 

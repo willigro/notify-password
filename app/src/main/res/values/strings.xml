@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">Minhas Senhas</string>
+    <string name="app_name">Keep Passwords</string>
 
     <!-- Login -->
-    <string name="auth_title_keyguard_secure">Minhas Senhas</string>
     <string name="auth_message_keyguard_secure">Desbloquei seu app realizando um login rápido</string>
     <string name="inform_your_password">Informe sua senha</string>
     <string name="inform_your_password_confirmation">Confirme a senha</string>

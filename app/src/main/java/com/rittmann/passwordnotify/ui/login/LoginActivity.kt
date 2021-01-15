@@ -108,7 +108,7 @@ class LoginActivity : BaseAppActivity() {
                 val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
                 if (km.isKeyguardSecure) {
                     val authIntent = km.createConfirmDeviceCredentialIntent(
-                        getString(R.string.auth_title_keyguard_secure),
+                        getString(R.string.app_name),
                         getString(R.string.auth_message_keyguard_secure)
                     )
                     startActivityForResult(authIntent, OPEN_AUTH)
