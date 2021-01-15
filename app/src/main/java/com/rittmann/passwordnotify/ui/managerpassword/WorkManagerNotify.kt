@@ -71,7 +71,7 @@ class NotificationController {
 
     fun create(context: Context, notificationId: Long, title: String?, message: String?) {
         val builder = NotificationCompat.Builder(context, chanelId)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.mipmap.icon)
             .setContentTitle(title)
             .setStyle(
                 NotificationCompat.BigTextStyle()
