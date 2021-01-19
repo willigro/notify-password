@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/layout_padding"
+    tools:context=".ui.login.LoginActivity">
+
+    <TextView
+        android:id="@+id/labelLogin"
+        style="@style/TextViewLabelToInput"
+        android:text="@string/inform_your_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/EditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelLogin" />
+
+    <TextView
+        android:id="@+id/labelLoginConfirmation"
+        style="@style/TextViewLabelToInput"
+        android:text="@string/inform_your_password_confirmation"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/edtPasswordConfirmation"
+        style="@style/EditText"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelLoginConfirmation"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnDoLogin"
+        style="@style/ButtonConfirm"
+        android:text="@string/btn_do_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirmation" />
+</androidx.constraintlayout.widget.ConstraintLayout>

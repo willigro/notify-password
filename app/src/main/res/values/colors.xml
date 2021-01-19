@@ -3,4 +3,17 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <!-- Background -->
+    <color name="backgroundLight">#EAEBEC</color>
+    <color name="backgroundDivisor">#3A3A3A</color>
+
+    <!-- Button -->
+    <color name="buttonBackgroundLight">#0672E4</color>
+    <color name="buttonBackgroundSecondaryLight">#E46606</color>
+    <color name="buttonBackgroundThirdLight">#06E49E</color>
+
+    <!-- Text -->
+    <color name="textLight">#EAEBEC</color>
+    <color name="textDark">#2C2C2C</color>
 </resources>

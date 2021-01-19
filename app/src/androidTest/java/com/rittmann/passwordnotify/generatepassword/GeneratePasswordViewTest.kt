@@ -7,7 +7,7 @@ import com.rittmann.passwordnotify.support.ActivityTest
 import com.rittmann.passwordnotify.support.ExpressoUtil.checkValueError
 import com.rittmann.passwordnotify.support.ExpressoUtil.performClick
 import com.rittmann.passwordnotify.support.ExpressoUtil.putValue
-import com.rittmann.passwordnotify.ui.generatepassword.MainActivity
+import com.rittmann.passwordnotify.ui.generatepassword.GeneratePasswordActivity
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -16,7 +16,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun generateRandomStringPasswordWithFourDigits() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(4, it.length)
             }
@@ -29,7 +29,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun generateRandomStringPasswordWithSixDigits() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(6, it.length)
             }
@@ -42,7 +42,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun showInvalidMessageErrorWhenLengthIsZero() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 fail()
             }
@@ -57,7 +57,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun showInvalidMessageErrorWhenLengthIsNegative() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 fail()
             }
@@ -72,7 +72,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun generateRandomNumericPasswordWithSevenDigits() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(7, it.length)
                 containsIn(it, true, Constants.numbers)
@@ -86,7 +86,7 @@ class GeneratePasswordViewTest : ActivityTest() {
 
     @Test
     fun generateRandomNumericPasswordWithTwoDigits() {
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(2, it.length)
                 containsIn(it, true, Constants.numbers)
@@ -101,7 +101,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomLowerCasePasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 containsIn(it, true, Constants.lowerCase)
@@ -125,7 +125,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomUpperCasePasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 containsIn(it, true, Constants.upperCase)
@@ -150,7 +150,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomSpecialPasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 containsIn(it, true, Constants.special)
@@ -174,7 +174,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomAccentPasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 containsIn(it, true, Constants.accents)
@@ -198,7 +198,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomLowerAndUpperCasePasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))
@@ -227,7 +227,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomNumbersLowerAndUpperCasePasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))
@@ -256,7 +256,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomSpecialAndNumbersLowerAndUpperCasePasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))
@@ -289,7 +289,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun generateRandomAllPasswordWithTwentyDigits() {
         val digits = 20
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))
@@ -318,7 +318,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun uncheckAllCheckBoxAndGenerateRandomAllWithThirtyDigits() {
         val digits = 30
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))
@@ -342,7 +342,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun uncheckAllCheckBoxAndGenerateRandomAllWithFourDigits() {
         val digits = 4
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
             }
@@ -358,7 +358,7 @@ class GeneratePasswordViewTest : ActivityTest() {
     @Test
     fun checkAllCheckBoxAndGenerateRandomAllWithFiveDigits() {
         val digits = 5
-        getActivity<MainActivity>().onActivity { activity ->
+        getActivity<GeneratePasswordActivity>().onActivity { activity ->
             activity.viewModel.getGeneratedPassword().observeForever {
                 assertEquals(digits, it.length)
                 assertEquals(true, it.somethingContainsIn(Constants.lowerCase))

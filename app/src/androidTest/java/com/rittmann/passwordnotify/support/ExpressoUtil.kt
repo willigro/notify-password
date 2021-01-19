@@ -3,22 +3,30 @@ package com.rittmann.passwordnotify.support
 import android.app.Activity
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.core.internal.deps.guava.collect.Iterables
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasErrorText
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
+import com.rittmann.passwordnotify.support.recyclerview.TestUtils.withRecyclerView
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
@@ -35,8 +43,29 @@ object ExpressoUtil {
         }.check(matches(withText(containsString(value))))
     }
 
+    fun checkValue(value: String, withScroll: Boolean = false) {
+        onView(allOf(withText(value))).apply {
+            if (withScroll)
+                perform(scrollTo())
+        }.check(matches(isDisplayed()))
+    }
+
     fun checkValueError(id: Int, value: String, withScroll: Boolean = false) {
         onView(withId(id)).check(matches(hasErrorText(value)))
+    }
+
+    fun checkValueRecycler(recyclerId: Int, targetId: Int, position: Int, value: String) {
+        onView(withRecyclerView(recyclerId).atPositionOnView(position, targetId)).check(
+            matches(withText(value))
+        )
+    }
+
+    fun viewIsChecked(id: Int) {
+        onView(withId(id)).check(matches(isChecked()))
+    }
+
+    fun viewIsNotChecked(id: Int) {
+        onView(withId(id)).check(matches(not(isChecked())))
     }
 
     fun performClick(id: Int, withScroll: Boolean = false) {
@@ -45,6 +74,10 @@ object ExpressoUtil {
                 perform(scrollTo())
             perform(click())
         }
+    }
+
+    fun performClickRecycler(recyclerId: Int, position: Int) {
+        onView(withRecyclerView(recyclerId).atPosition(position)).perform(click())
     }
 
     fun putValue(id: Int, value: String, withScroll: Boolean = false) {
@@ -128,14 +161,51 @@ object ExpressoUtil {
         )
     }
 
+    fun scrollToBottom(resId: Int) {
+        onView(withId(resId)).perform(ScrollToBottomAction())
+    }
+
+    class ScrollToBottomAction : ViewAction {
+        override fun getDescription(): String {
+            return "scroll RecyclerView to bottom"
+        }
+
+        override fun getConstraints(): Matcher<View> {
+            return allOf<View>(isAssignableFrom(RecyclerView::class.java), isDisplayed())
+        }
+
+        override fun perform(uiController: UiController?, view: View?) {
+            val recyclerView = view as RecyclerView
+            val itemCount = recyclerView.adapter?.itemCount
+            val position = itemCount?.minus(1) ?: 0
+            recyclerView.scrollToPosition(position)
+            uiController?.loopMainThreadUntilIdle()
+        }
+    }
+
+    class ExecuteOn(private val callTime: Int) {
+        var current = 1
+
+        fun next(callback: () -> Unit) {
+            if (current == callTime)
+                callback()
+            current++
+        }
+    }
+
     @Throws(Throwable::class)
     fun getCurrentActivity(): Activity? {
+        getInstrumentation().waitForIdleSync()
         val activity = arrayOfNulls<Activity>(1)
-        onView(isRoot()).check { view, _ ->
-            if (view.context is Activity)
-                activity[0] =
-                    view.context as Activity?
+        onView(isRoot()).check { _, _ ->
+            val activities =
+                ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+            activity[0] = Iterables.getOnlyElement(activities)
         }
         return activity[0]
+    }
+
+    fun pressBack() {
+        onView(isRoot()).perform(ViewActions.pressBack())
     }
 }

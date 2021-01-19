@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margin -->
+    <dimen name="label_to_input_top_margin">8dp</dimen>
+    <dimen name="label_to_input_bottom_margin">4dp</dimen>
+    <!-- Padding -->
+    <dimen name="layout_padding">15dp</dimen>
+    <dimen name="button_padding">10dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="corners">6dp</dimen>
+
+    <!-- Text -->
+    <dimen name="text_size_normal">14sp</dimen>
+</resources>

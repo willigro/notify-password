@@ -3,6 +3,8 @@ package com.rittmann.passwordnotify.data
 const val TAG = "Testing"
 
 object Constants {
+    const val MAX_PASSWORD_LENGTH: Int = 1000
+
     val upperCase = arrayListOf(
         'B',
         'A',
