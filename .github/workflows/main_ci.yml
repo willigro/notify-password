@@ -32,13 +32,26 @@ jobs:
         with:
           java-version:  1.8
 
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
       # Runs a set of commands using the runners shell
       - name: Build with Gradle
         run: ./gradlew build
       
-      # Runs the debug apk updload
       - name: Build Debug APK
-        uses: actions/upload-artifact@v2.2.2
-        with:
-          name: app-debug
-          path: app/build/outputs/debug/app-debug.apk  
+        run: ./gradlew assembleDebug
+      
+      # Runs the debug apk updload
+#       - name: Build Debug APK
+#         uses: actions/upload-artifact@v2.2.2
+#         with:
+#           name: app-debug
+#           path: app/build/outputs/debug/app-debug.apk 
+               
+      - name: Releasing using Hub
+        uses: ShaunLWM/action-release-debugapk@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.AndroidRelease }}
+          APP_FOLDER: app
+          RELEASE_TITLE: New Build
