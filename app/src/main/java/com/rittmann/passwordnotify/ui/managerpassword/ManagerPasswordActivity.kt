@@ -1,15 +1,15 @@
 package com.rittmann.passwordnotify.ui.managerpassword
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.rittmann.androidtools.dateutil.DateUtilImpl
 import com.rittmann.passwordnotify.R
@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_manager_password.btnUpdaterManage
 import kotlinx.android.synthetic.main.activity_manager_password.edtName
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationDescription
 import kotlinx.android.synthetic.main.activity_manager_password.labelNotificationsNotFound
+import kotlinx.android.synthetic.main.generate_password_input.btnCopyPassword
 import kotlinx.android.synthetic.main.generate_password_input.btnGeneratePassword
 import kotlinx.android.synthetic.main.generate_password_input.edtGeneratedPassword
 import kotlinx.android.synthetic.main.password_permissions.checkAccent
@@ -43,6 +44,7 @@ import kotlinx.android.synthetic.main.password_permissions.checkSpecial
 import kotlinx.android.synthetic.main.password_permissions.checkUpperCase
 import kotlinx.android.synthetic.main.password_permissions.edtLength
 import org.kodein.di.erased.instance
+
 
 class ManagerPasswordActivity : BaseAppActivity() {
 
@@ -82,6 +84,13 @@ class ManagerPasswordActivity : BaseAppActivity() {
 
         btnGeneratePassword.setOnClickListener {
             viewModel.generatePassword(generateManagerPermission())
+        }
+
+        btnCopyPassword.setOnClickListener {
+            val clipboard: ClipboardManager =
+                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("label", edtGeneratedPassword.text?.toString() ?: "")
+            clipboard.setPrimaryClip(clip)
         }
 
         btnUpdaterManager.setOnClickListener {
